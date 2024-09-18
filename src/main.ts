@@ -2,13 +2,17 @@ import './assets/tailwind/index.css';
 import './assets/base.css';
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
+import { piniaPluginPersist } from "@/plugins/pinia/persistPlugin";
 import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
+const pinia = createPinia();
+
+pinia.use(piniaPluginPersist);
+
+app.use(pinia);
+app.use(router);
 
 app.mount('#app')
