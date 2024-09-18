@@ -1,7 +1,12 @@
-const colors = require('tailwindcss/colors')
+import type { Config } from 'tailwindcss'
+
+const colors = require('tailwindcss/colors');
 
 export default {
-  content: [],
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+  ],
   prefix: 'tw-',
   theme: {
     screens: {
@@ -13,8 +18,8 @@ export default {
       '2xl': '1536px',
     },
     colors: {
-      gray: colors.coolGray,
-      blue: colors.lightBlue,
+      gray: colors.gray,
+      blue: colors.sky,
       red: colors.rose,
       pink: colors.fuchsia,
     },
@@ -22,5 +27,5 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+} satisfies Config
 
