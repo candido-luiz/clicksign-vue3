@@ -1,5 +1,5 @@
+import { useProjectStore } from '@/stores/project';
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,17 +7,28 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import ('@/views/ListProjectView.vue'),
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/no-projects',
+      name: 'no-projects',
+      component: () => import ('@/views/NoProjectView.vue'),
+    },
+    {
+      path: '/create-project',
+      name: 'create-project',
+      component: () => import('@/views/CreateProjectView.vue'),
     }
   ]
+});
+
+router.beforeEach((to, from) => {
+  const projectStore = useProjectStore(); 
+  if(to.name === 'home') {
+    if(!projectStore.hasProjects) {
+      return { name: 'no-projects' }
+    }
+  }
 })
 
 export default router
