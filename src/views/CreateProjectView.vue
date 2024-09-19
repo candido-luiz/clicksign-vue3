@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Project } from '@/models/Project';
 import { useProjectStore } from '@/stores/project';
+import { fileToBase64 } from '@/utils/fileConverter';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -11,7 +12,27 @@ const projectName = ref<string>('');
 const projectCustomer = ref<string>('');
 const projectStartDate = ref<string>('');
 const projectFinalDate = ref<string>('');
-const projectCover = ref<File | null>(null);
+const projectCoverUlr = ref<string>('');
+
+const handleFileChange = async (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  
+  if (file) {
+
+    try {
+      // Converter o arquivo para Base64
+      const base64 = await fileToBase64(file);
+      
+      // Armazenar no localStorage
+      localStorage.setItem('projectCover', base64);
+      
+      // Definir o src da imagem
+      projectCoverUlr.value = base64;
+    } catch (error) {
+      console.error("Erro ao converter a imagem para Base64", error);
+    }
+  }
+};
 
 const createProject = () => {
   const project = new Project(
@@ -19,7 +40,7 @@ const createProject = () => {
     projectCustomer.value,
     new Date(projectStartDate.value),
     new Date(projectFinalDate.value),
-    projectCover.value
+    projectCoverUlr.value
   );
 
   projectStore.addProject(project);
@@ -77,6 +98,7 @@ const createProject = () => {
         type="file"
         id="projectCover"
         accept="image/*"
+        @change="handleFileChange"
         class="tw-block tw-w-full tw-text-sm tw-text-gray-500 tw-file:py-2 tw-file:px-4 tw-file:border tw-file:border-gray-300 tw-file:rounded-md tw-file:text-sm tw-file:font-medium tw-file:bg-gray-100 hover:file:tw-bg-gray-200"
       />
 

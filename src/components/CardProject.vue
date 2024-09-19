@@ -1,34 +1,61 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 import { Project } from '@/models/Project'; // Importe o modelo Project
+import defaultCoverImage from '@/assets/images/default-card-background.png';
+import { useProjectStore } from '@/stores/project';
 
 const props = defineProps<{
   project: Project;
 }>();
 
+const { toggleFavorite } = useProjectStore();
+
 // Função para formatar a data
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
 };
+
+const cardCoverImage = computed(() => {
+  return props.project.coverImage || defaultCoverImage;
+});
+
+const isFavorite = computed(() => props.project.isFavorite);
 </script>
 
 <template>
-  <div class="tw-border tw-border-gray-200 tw-rounded-lg tw-shadow-md tw-overflow-hidden">
+  <div class="card mb-4 shadow-sm">
     <!-- Imagem de capa do projeto -->
-    <img v-if="project.coverImage" :src="project.coverImage" alt="Project Cover" class="tw-w-full tw-h-48 tw-object-cover" />
+    <div class="position-relative">
+      <!-- Imagem de capa do projeto ou imagem padrão -->
+      <img :src="cardCoverImage" alt="Project Cover" class="card-img-top" />
 
-    <div class="tw-p-4">
+      <!-- Ícone de favoritar/desfavoritar -->
+      <i
+        :class="[isFavorite ? 'bi bi-star-fill' : 'bi bi-star']"
+        class="position-absolute"
+        :style="{ 
+          bottom: '10px', 
+          right: '10px', 
+          fontSize: '1.5rem', 
+          cursor: 'pointer',
+          color: isFavorite ? '#FFB23D' : 'white' 
+        }"
+        @click="toggleFavorite(project.id)"
+      ></i>
+    </div>
+
+    <div class="card-body">
       <!-- Título do card -->
-      <h3 class="tw-text-xl tw-font-semibold tw-mb-2">{{ project.name }}</h3>
+      <h5 class="card-title">{{ project.name }}</h5>
 
       <!-- Texto do cliente -->
-      <p class="tw-text-gray-600 tw-mb-2">Cliente: {{ project.customer }}</p>
+      <p class="card-text">Cliente: {{ project.customer }}</p>
 
       <!-- Divisor -->
-      <hr class="tw-my-4" />
+      <hr />
 
       <!-- Data de início e data final -->
-      <div class="tw-flex tw-justify-between">
+      <div class="d-flex justify-content-between">
         <div>
           <strong>Data de Início:</strong> {{ formatDate(project.startDate) }}
         </div>

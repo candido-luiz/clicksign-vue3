@@ -6,11 +6,12 @@ export class Project {
   public customer: string;
   public startDate: Date;
   public finalDate: Date;
-  public coverImage?: File | null;
+  public coverImage?: string;
   public isFavorite?: boolean;
   
-  constructor(name: string, customer: string, startDate: Date, finalDate: Date, coverImage?: File | null) {
+  constructor(name: string, customer: string, startDate: Date, finalDate: Date, coverImage?: string) {
     this.id = uuidv4();
+    this.isFavorite = false;
     this.name = name;
     this.customer = customer;
     this.startDate = startDate;
