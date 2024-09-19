@@ -4,8 +4,12 @@ import { Project } from '@/models/Project'
 
 export const useProjectStore = defineStore('project', () => {
   const projects = ref<Project[]>([]);
-  const searchQuery = ref('');
+  const searchQuery = ref<string>('');
   const recentSearches = ref<string[]>([]);
+  const onlyFavorites = ref<boolean>(false)
+
+  // Opções de ordenação
+  const sortOption = ref<'alphabetical' | 'newest' | 'endingSoon'>('alphabetical');
 
   // Adiciona um novo projeto
   const addProject = (project: Project) => {
@@ -33,33 +37,43 @@ export const useProjectStore = defineStore('project', () => {
     }
   };
 
-  // Ordena os projetos
-  const sortedProjects = computed(() => {
-    const sorted = [...projects.value];
-    switch (sortOption.value) {
-      case 'alphabetical':
-        return sorted.sort((a, b) => a.name.localeCompare(b.name));
-      case 'newest':
-        return sorted.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
-      case 'endingSoon':
-        return sorted.sort((a, b) => a.finalDate.getTime() - b.finalDate.getTime());
-      default:
-        return sorted;
-    }
-  });
+  const setSortOption = (option: 'alphabetical' | 'newest' | 'endingSoon') => {
+    sortOption.value = option;
+  }
 
-  // Filtro de favoritos
   const favoriteProjects = computed(() => {
     return projects.value.filter(project => project.isFavorite);
   });
+
+  // Filtra e ordena os projetos com base nas opções fornecidas
+  const projectList = computed(() => {
+    let filteredProjects = projects.value;
+
+    if (onlyFavorites.value) {
+      filteredProjects = favoriteProjects.value;
+    }
+
+    const sortedProjects = [...filteredProjects];
+    switch (sortOption.value) {
+      case 'alphabetical':
+        return sortedProjects.sort((a, b) => a.name.localeCompare(b.name));
+      case 'newest':
+        return sortedProjects.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+      case 'endingSoon':
+        return sortedProjects.sort((a, b) => new Date(a.finalDate).getTime() - new Date(b.finalDate).getTime());
+      default:
+        return sortedProjects;
+    }
+  });
+
+  const setOnlyFavorites = (value: boolean) => {
+    onlyFavorites.value = value;
+  };
 
   // Total de projetos
   const totalProjects = computed(() => projects.value.length);
 
   const hasProjects = computed(() => !!totalProjects.value);
-
-  // Opções de ordenação
-  const sortOption = ref<'alphabetical' | 'newest' | 'endingSoon'>('alphabetical');
 
   // Barra de busca
   const searchResults = computed(() => {
@@ -93,8 +107,7 @@ export const useProjectStore = defineStore('project', () => {
     removeProject,
     editProject,
     toggleFavorite,
-    sortedProjects,
-    favoriteProjects,
+    projectList, // Adiciona a computada projectList
     totalProjects,
     hasProjects,
     searchQuery,
@@ -102,6 +115,9 @@ export const useProjectStore = defineStore('project', () => {
     recentSearches,
     addSearchHistory,
     highlightText,
-    sortOption
+    sortOption,
+    onlyFavorites,
+    setOnlyFavorites,
+    setSortOption,
   }
 });
