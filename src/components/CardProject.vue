@@ -8,18 +8,33 @@ const props = defineProps<{
   project: Project;
 }>();
 
+const emit = defineEmits<{
+  (e: 'removeProject', projectId: string): void;
+}>();
+
+
 const { toggleFavorite } = useProjectStore();
 
 // Função para formatar a data
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
-};
 
 const cardCoverImage = computed(() => {
   return props.project.coverImage || defaultCoverImage;
 });
 
 const isFavorite = computed(() => props.project.isFavorite);
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
+};
+
+const editProject = (projectId: string) => {
+
+}
+
+const removeProject = (projectId: string) => {
+  emit('removeProject', projectId)
+}
+
 </script>
 
 <template>
@@ -34,14 +49,34 @@ const isFavorite = computed(() => props.project.isFavorite);
         :class="[isFavorite ? 'bi bi-star-fill' : 'bi bi-star']"
         class="position-absolute"
         :style="{ 
-          bottom: '10px', 
-          right: '10px', 
+          bottom: '17px', 
+          right: '74px', 
           fontSize: '1.5rem', 
           cursor: 'pointer',
           color: isFavorite ? '#FFB23D' : 'white' 
         }"
         @click="toggleFavorite(project.id)"
       ></i>
+
+      <!-- Dropdown de ações -->
+      <div class="position-absolute" style="bottom: 17px; right: 16px;">
+        <div class="dropdown">
+          <button 
+            class="btn bg-white rounded-circle shadow-sm" 
+            type="button" 
+            id="dropdownMenuButton" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false"
+            style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;"
+          >
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="#" @click="editProject(project.id)">Editar</a></li>
+            <li><a class="dropdown-item text-danger" href="#" @click="removeProject(project.id)">Remover</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <div class="card-body">

@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import CardProject from '@/components/CardProject.vue';
+import ModalRemoveProject from '@/components/ModalRemoveProject.vue';
 import { Project } from '@/models/Project';
 import { useProjectStore } from '@/stores/project';
-import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const projectStore = useProjectStore();
 const projectList = ref<Project[]>([]);
 const totalProjects = computed(() => projectStore.projects.length);
+const showModal = ref(false);
+const projectIdToRemove = ref<string | null>(null);
 
 const createNewProject = () => {
   router.push({ name: 'create-project' });
@@ -32,9 +35,28 @@ const toggleSortOption = (event: Event) => {
   projectStore.setSortOption(option);
 }
 
+const removeProject = (projectId: string) => {
+  projectIdToRemove.value = projectId;
+  showModal.value = true;
+};
+
+const confirmRemoval = (projectId: string) => {
+  projectStore.removeProject(projectId);
+  showModal.value = false;
+  projectIdToRemove.value = null;
+  projectList.value = projectList.value.filter(project => {
+    return project.id !== projectId;
+  });
+};
+
+const cancelRemoval = () => {
+  showModal.value = false;
+  projectIdToRemove.value = null;
+}
+
 watch([onlyFavorites, sortOption], () => {
   projectList.value = projectStore.projectList;
-}, {immediate: true})
+}, { immediate: true })
 </script>
 
 <template>
@@ -42,12 +64,12 @@ watch([onlyFavorites, sortOption], () => {
     <!-- Header com quantidade total de projetos -->
     <header class="p-4 bg-light d-flex justify-content-between align-items-center">
       <!-- Título do header -->
-       <div class="d-flex align-items-center gap-1">
-         <h1 class="fs-4 m-0" style="font-size: 24px; font-weight: 600;">
-           Projetos 
-         </h1>
-         <span class="fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
-       </div>
+      <div class="d-flex align-items-center gap-1">
+        <h1 class="fs-4 m-0" style="font-size: 24px; font-weight: 600;">
+          Projetos 
+        </h1>
+        <span class="fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
+      </div>
 
       <!-- Container para os elementos no lado direito -->
       <div class="d-flex align-items-center gap-4">
@@ -84,9 +106,19 @@ watch([onlyFavorites, sortOption], () => {
           :project="project"
           class="w-100"
           style="max-width: 346px; min-width: 346px;"
+          @removeProject="removeProject"
         />
       </TransitionGroup>
-</main>
+    </main>
+
+    <!-- Modal de Remoção de Projeto -->
+    <ModalRemoveProject
+      v-if="showModal"
+      :projectName="projectList.find(p => p.id === projectIdToRemove)?.name || ''"
+      :projectId="projectIdToRemove!"
+      @confirm="confirmRemoval"
+      @cancel="cancelRemoval"
+    />
   </div>
 </template>
 
