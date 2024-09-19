@@ -14,6 +14,64 @@ const projectStartDate = ref<string>('');
 const projectFinalDate = ref<string>('');
 const projectCoverUlr = ref<string>('');
 
+const errors = ref({
+  projectName: '',
+  customer: '',
+  startDate: '',
+  finalDate: '',
+});
+
+const validateProjectName = () => {
+  const regex = /^[A-Za-z]+(?:\s+[A-Za-z]+){1,}$/;
+  errors.value.projectName = regex.test(projectName.value) ? 
+    '' : 
+    'Por favor, digite ao menos duas palavras'
+}
+
+const validateProjectCustomer = () => {
+  const regex = /\b\w{3,}\b/;
+  errors.value.customer = regex.test(projectCustomer.value) ? 
+    '' : 
+    'Por favor, digite ao menos palavras'
+}
+
+const validateProjectStartDate = () => {
+  const validStartDate = (
+    projectStartDate.value && 
+    (!projectFinalDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
+  );
+  errors.value.startDate = validStartDate ? 
+    '' : 
+    'Selecione uma data válida'
+}
+
+const validateProjectFinalDate = () => {
+  const validFinalDate = (
+    projectFinalDate.value && 
+    (!projectStartDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
+  );
+  errors.value.finalDate = validFinalDate ? 
+    '' : 
+    'Selecione uma data válida'
+}
+
+const validateFormData = () => {
+  validateProjectName();
+  validateProjectCustomer();
+  validateProjectStartDate();
+  validateProjectFinalDate();
+
+  const formIsValid = !Object.values(errors.value).some(error => !!error);
+  return formIsValid;
+};
+
+const submitForm = () => {
+  if (validateFormData()) {
+    createProject();
+  }
+};
+
+
 const handleFileChange = async (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];
   
@@ -71,16 +129,20 @@ const goToHome = () => {
 
       <!-- Formulário -->
        <div class="border rounded-2">
-         <form @submit.prevent="createProject" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
+         <form @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
            <div class="mb-3">
              <label for="projectName" class="form-label">Nome do projeto</label>
              <input
                type="text"
                id="projectName"
-               v-model="projectName"
-               required
+               v-model.trim="projectName"
+               @blur="validateProjectName"
                class="form-control"
+               :class="{'is-invalid' : !!errors.projectName}"
              />
+             <div class="invalid-feedback">
+                {{ errors.projectName }}
+              </div>
            </div>
    
            <div class="mb-3">
@@ -88,10 +150,14 @@ const goToHome = () => {
              <input
                type="text"
                id="projectCustomer"
-               v-model="projectCustomer"
-               required
+               v-model.trim="projectCustomer"
+               @blur="validateProjectCustomer"
                class="form-control"
+               :class="{'is-invalid' : !!errors.customer}"
              />
+             <div class="invalid-feedback">
+                {{ errors.customer }}
+              </div>
            </div>
    
            <div class="row mb-3">
@@ -101,9 +167,13 @@ const goToHome = () => {
                  type="date"
                  id="projectStartDate"
                  v-model="projectStartDate"
-                 required
+                 @blur="validateProjectStartDate"
                  class="form-control"
+                :class="{'is-invalid' : !!errors.startDate}"
                />
+               <div class="invalid-feedback">
+                {{ errors.startDate }}
+              </div>
              </div>
              <div class="col">
                <label for="projectFinalDate" class="form-label">Data final</label>
@@ -111,9 +181,13 @@ const goToHome = () => {
                  type="date"
                  id="projectFinalDate"
                  v-model="projectFinalDate"
-                 required
+                 @blur="validateProjectFinalDate"
                  class="form-control"
+                :class="{'is-invalid' : !!errors.finalDate}"
                />
+                <div class="invalid-feedback">
+                  {{ errors.finalDate }}
+                </div>
              </div>
            </div>
    
