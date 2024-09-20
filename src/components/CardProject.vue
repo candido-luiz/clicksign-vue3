@@ -6,6 +6,8 @@ import { useProjectStore } from '@/stores/project';
 
 const props = defineProps<{
   project: Project;
+  projectNameQuery: String;
+  highlightProjectName: Boolean;
 }>();
 
 const emit = defineEmits<{
@@ -19,6 +21,16 @@ const { toggleFavorite } = useProjectStore();
 
 const cardCoverImage = computed(() => {
   return props.project.coverImage || defaultCoverImage;
+});
+
+const projectName = computed(() => {
+  const name = props.project.name;
+  if (!props.projectNameQuery || !props.highlightProjectName) return name;
+  const regex = new RegExp(`(${props.projectNameQuery})`, 'gi');
+  return name.replace(
+    regex, 
+    '<mark style="color: #ffffff; background-color: #ffb23d; padding: 0;">$1</mark>'
+  );
 });
 
 const isFavorite = computed(() => props.project.isFavorite);
@@ -81,7 +93,8 @@ const removeProject = (projectId: string) => {
 
     <div class="card-body">
       <!-- Título do card -->
-      <h5 class="card-title">{{ project.name }}</h5>
+      <!-- <h5 class="card-title">{{ project.name }}</h5> -->
+      <h5 class="card-title" v-html="projectName"></h5>
 
       <!-- Texto do cliente -->
       <p class="card-text">Cliente: {{ project.customer }}</p>
@@ -103,5 +116,9 @@ const removeProject = (projectId: string) => {
 </template>
 
 <style scoped>
-/* Você pode adicionar estilos adicionais aqui, se necessário */
+mark{
+  padding: 0;
+  margin: 0;
+  background-color: #ffb23d; /* ou outra cor de destaque */
+}
 </style>

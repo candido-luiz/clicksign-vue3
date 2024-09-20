@@ -5,17 +5,22 @@ import CardProject from '@/components/CardProject.vue';
 import ModalRemoveProject from '@/components/ModalRemoveProject.vue';
 import { Project } from '@/models/Project';
 import { useProjectStore } from '@/stores/project';
+import pageLogo from "@/assets/images/symbol.png";
+import SearchBar from "@/components/SearchBar.vue";
+import { useSuggestionStore } from '@/stores/suggestion';
 
 const router = useRouter();
 const projectStore = useProjectStore();
-const projectList = ref<Project[]>([]);
-const totalProjects = computed(() => projectStore.projects.length);
-const showModal = ref(false);
-const projectIdToRemove = ref<string | null>(null);
+const suggestionStore = useSuggestionStore();
 
-const createNewProject = () => {
-  router.push({ name: 'create-project' });
-}
+const projectList = ref<Project[]>([]);
+const showModal = ref<boolean>(false);
+const projectIdToRemove = ref<string | null>(null);
+const showSearchBar = ref<boolean>(false);
+const query = ref<string>('');
+const searcherdQuery = ref<string>('');
+
+const totalProjects = computed(() => projectStore.projects.length);
 
 const onlyFavorites = computed(() => {
   return projectStore.onlyFavorites;
@@ -23,7 +28,25 @@ const onlyFavorites = computed(() => {
 
 const sortOption = computed(() => {
   return projectStore.sortOption;
+});
+
+const filteredProjectList = computed(() => {
+  if(searcherdQuery.value) {
+    return projectList.value.filter(project => {
+      return project.name.toLowerCase().includes(searcherdQuery.value.toLowerCase());
+    })
+  }
+
+  return projectList.value;
 })
+
+const suggestionList = computed(() => {
+  return suggestionStore.getSuggestions;
+})
+
+const createNewProject = () => {
+  router.push({ name: 'create-project' });
+}
 
 const toggleFavoritesView = (event: Event) => {
   const showOnlyFavorites = (event.target as HTMLInputElement).checked;
@@ -54,6 +77,20 @@ const cancelRemoval = () => {
   projectIdToRemove.value = null;
 }
 
+const setShowSearchBar = (value: boolean) => {
+  showSearchBar.value = value;
+}
+
+const searchProjects = (query: string) => {
+  suggestionStore.addSuggestion(query);
+  setShowSearchBar(false);
+  searcherdQuery.value = query;
+}
+
+const removeSuggestion = (suggestionIndex: number) => {
+  suggestionStore.removeSuggestion(suggestionIndex);
+}
+
 watch([onlyFavorites, sortOption], () => {
   projectList.value = projectStore.projectList;
 }, { immediate: true })
@@ -61,6 +98,22 @@ watch([onlyFavorites, sortOption], () => {
 
 <template>
   <div>
+    <SearchBar 
+      v-if="showSearchBar"
+      :suggestions="suggestionList"
+      @search="searchProjects"
+      @removeSuggestion="removeSuggestion"
+      v-model="query"
+    />
+    <div v-show="!showSearchBar" class="topbar position-relative">
+      <img :src="pageLogo" alt="logo do gerenciador de projetos" width="72" height="72">
+      <div class="page-title">
+        Gerenciador de Projetos
+      </div>
+      <div class="search-icon" @click="setShowSearchBar(true)">
+        <i class="bi bi-search"></i>
+      </div>
+    </div>
     <!-- Header com quantidade total de projetos -->
     <header class="p-4 bg-light d-flex justify-content-between align-items-center">
       <!-- Título do header -->
@@ -101,9 +154,11 @@ watch([onlyFavorites, sortOption], () => {
     <main class="p-4">
       <TransitionGroup name="fade" tag="div" class="d-flex flex-wrap gap-4">
         <CardProject
-          v-for="project in projectList"
+          v-for="project in filteredProjectList"
           :key="project.id"
           :project="project"
+          :projectNameQuery="query"
+          :highlightProjectName="showSearchBar"
           class="w-100"
           style="max-width: 346px; min-width: 346px;"
           @removeProject="removeProject"
@@ -123,6 +178,34 @@ watch([onlyFavorites, sortOption], () => {
 </template>
 
 <style scoped>
+.topbar {
+  height: 80px;
+  background: #1C1930;
+  box-shadow: 0px 4px 4px 0 #00000040;
+  margin-bottom: 4px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.topbar .page-title {
+  width: min-content;
+}
+
+.topbar .search-icon {
+  font-size: 18px;
+  position: absolute;
+  right: 64px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.topbar .search-icon:hover {
+  transform: scale(1.4);
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s, transform 0.5s;
 }
