@@ -5,3 +5,7 @@
 body, #app {
   min-height: 100vh;
 }
+
+body {
+  font-family: 'Encode Sans Semi Expanded', sans-serif;
+}
