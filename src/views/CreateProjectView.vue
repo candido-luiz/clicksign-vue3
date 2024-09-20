@@ -32,7 +32,7 @@ const validateProjectCustomer = () => {
   const regex = /\b\w{3,}\b/;
   errors.value.customer = regex.test(projectCustomer.value) ? 
     '' : 
-    'Por favor, digite ao menos palavras'
+    'Por favor, digite ao menos uma palavra'
 }
 
 const validateProjectStartDate = () => {
