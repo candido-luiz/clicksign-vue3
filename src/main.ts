@@ -1,5 +1,10 @@
 import './assets/tailwind/index.css';
 import './assets/base.css';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js'
+import './assets/scss/bootstrap/custom.scss';
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { piniaPluginPersist } from "@/plugins/pinia/persistPlugin";
@@ -14,5 +19,6 @@ pinia.use(piniaPluginPersist);
 
 app.use(pinia);
 app.use(router);
+// app.use(bootstrap);
 
 app.mount('#app')

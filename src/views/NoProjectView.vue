@@ -18,9 +18,9 @@ import { useRouter } from 'vue-router';
 </template>
 
 
-<style scoped>
+<style scoped lang="scss">
 .no-project-container {
-  height: calc(100vh - var(--clicksign-page-header-height));
+  height: calc(100vh - $clicksign-page-header-height);
   padding: 42px 60px;
 }
 .no-projects {
@@ -32,7 +32,7 @@ import { useRouter } from 'vue-router';
   background-color: #ffffff;
 }
 h1 {
-  color: var(--clicksign-emphasis-text-color);
+  color: $clicksign-emphasis-text-color;
   size: 24px;
   margin-bottom: 24px;
 }

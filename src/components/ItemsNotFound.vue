@@ -16,7 +16,7 @@ const resetFilters = () => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 .no-items {
   height: 100%;
@@ -26,7 +26,7 @@ const resetFilters = () => {
   align-items: center;
 }
 h1 {
-  color: var(--clicksign-emphasis-text-color);
+  color: $clicksign-emphasis-text-color;
   size: 24px;
   margin-bottom: 24px;
 }

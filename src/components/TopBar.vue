@@ -30,10 +30,10 @@ const setShowSearchBar = inject(setShowSearchBarKey);
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .topbar {
   height: 80px;
-  background: #1C1930;
+  background: $clicksign-topbar-background;
   box-shadow: 0px 4px 4px 0 #00000040;
   color: white;
   display: flex;

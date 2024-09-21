@@ -76,7 +76,7 @@ const searchByHistoryItem = (item: string) => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .searchbox {
   position: relative;
   margin-top: 0 !important;
@@ -93,7 +93,7 @@ const searchByHistoryItem = (item: string) => {
   font-size: 18px;
 }
 .searchbar {
-  height: var(--clicksign-page-header-height);
+  height: $clicksign-page-header-height;
   padding: .5rem 1rem;
   font-size: 1.25rem;
 }
