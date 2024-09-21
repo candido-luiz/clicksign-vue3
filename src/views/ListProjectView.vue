@@ -76,6 +76,12 @@ const searchProjects = (query: string) => {
   searcherdQuery.value = query;
 }
 
+const cancelSearch = () => {
+  setShowSearchBar(false);
+  searcherdQuery.value = "";
+  query.value = "";
+}
+
 const removeSuggestion = (suggestionIndex: number) => {
   suggestionStore.removeSuggestion(suggestionIndex);
 }
@@ -91,9 +97,10 @@ watch([onlyFavorites, sortOption], () => {
     <SearchBar 
       v-if="showSearchBar"
       :suggestions="suggestionList"
+      v-model="query"
       @search="searchProjects"
       @removeSuggestion="removeSuggestion"
-      v-model="query"
+      @cancel="cancelSearch"
     />
 
     <HeaderProject />

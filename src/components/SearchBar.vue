@@ -1,14 +1,12 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <!-- Input de pesquisa -->
+  <div class="row mx-0">
+    <div class="col-12 px-0">
       <div class="searchbox input-group">
         <span class="input-group-text" id="basic-addon1">
           <i class="bi bi-search"></i>
-
-
         </span>
         <input 
+          ref="searchInput"
           class="form-control searchbar" 
           type="text" 
           placeholder="Digite o nome do projeto..."
@@ -38,16 +36,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, computed, nextTick } from 'vue';
+import { defineEmits, computed, nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = defineProps<{
   suggestions: string[];
 }>();
 
+const searchInput = ref<HTMLElement>();
 const searchQuery = defineModel<string>({required: true});
 const emit = defineEmits<{
   (e: 'search', query: string): void;
   (e: 'removeSuggestion', suggestionIndex: number): void;
+  (e: 'cancel'): void;
+
 }>();
 
 const filteredSuggestionList = computed(() => {
@@ -74,6 +75,36 @@ const searchByHistoryItem = (item: string) => {
     emitSearch();
   });
 }
+
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (event.key === "Escape") {
+    emit("cancel");
+  }
+}
+
+const handleClickOutside = (event: Event) => {
+  const searchboxElement = searchInput.value;
+  if (searchboxElement && !searchboxElement.contains(event.target as Node)) {
+    emit("cancel"); 
+  }
+}
+
+onMounted(() => {
+  if(searchInput.value) {
+    searchInput.value.focus();
+  }
+  document.addEventListener('keyup', handleKeyUp);
+  setTimeout(() => {
+    document.addEventListener('click', handleClickOutside);
+  }, 500);
+  nextTick(() => {
+  })
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', handleKeyUp);
+  document.removeEventListener('click', handleClickOutside);
+})
 </script>
 
 <style scoped lang="scss">
