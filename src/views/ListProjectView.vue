@@ -8,6 +8,7 @@ import { useProjectStore } from '@/stores/project';
 import SearchBar from "@/components/SearchBar.vue";
 import { useSuggestionStore } from '@/stores/suggestion';
 import { setShowSearchBarKey, showSearchBarKey } from '@/injection-keys/keys';
+import ItemsNotFound from '@/components/ItemsNotFound.vue';
 
 const router = useRouter();
 const projectStore = useProjectStore();
@@ -60,6 +61,12 @@ const toggleSortOption = (event: Event) => {
   projectStore.setSortOption(option);
 }
 
+const resetFilters = () => {
+  projectStore.setOnlyFavorites(false);
+  query.value = "";
+  searcherdQuery.value = "";
+}
+
 const removeProject = (projectId: string) => {
   projectIdToRemove.value = projectId;
   showModal.value = true;
@@ -88,6 +95,7 @@ const searchProjects = (query: string) => {
 const removeSuggestion = (suggestionIndex: number) => {
   suggestionStore.removeSuggestion(suggestionIndex);
 }
+
 
 watch([onlyFavorites, sortOption], () => {
   projectList.value = projectStore.projectList;
@@ -140,7 +148,7 @@ watch([onlyFavorites, sortOption], () => {
     </header>
 
     <!-- Main com a listagem de cards -->
-    <main class="p-4">
+    <main v-if="filteredProjectList.length" class="p-4">
       <TransitionGroup name="fade" tag="div" class="d-flex flex-wrap gap-4">
         <CardProject
           v-for="project in filteredProjectList"
@@ -153,6 +161,12 @@ watch([onlyFavorites, sortOption], () => {
           @removeProject="removeProject"
         />
       </TransitionGroup>
+    </main>
+
+    <main v-else>
+      <ItemsNotFound 
+        @resetFilters="resetFilters"
+      />
     </main>
 
     <!-- Modal de Remoção de Projeto -->
@@ -181,18 +195,6 @@ watch([onlyFavorites, sortOption], () => {
 
 .topbar .page-title {
   width: min-content;
-}
-
-.topbar .search-icon {
-  font-size: 18px;
-  position: absolute;
-  right: 64px;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.topbar .search-icon:hover {
-  transform: scale(1.4);
 }
 
 .fade-enter-active, .fade-leave-active {
