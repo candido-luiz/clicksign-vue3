@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, inject, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import CardProject from '@/components/CardProject.vue';
 import ModalRemoveProject from '@/components/ModalRemoveProject.vue';
 import { Project } from '@/models/Project';
 import { useProjectStore } from '@/stores/project';
-import pageLogo from "@/assets/images/symbol.png";
 import SearchBar from "@/components/SearchBar.vue";
 import { useSuggestionStore } from '@/stores/suggestion';
+import { setShowSearchBarKey, showSearchBarKey } from '@/injection-keys/keys';
 
 const router = useRouter();
 const projectStore = useProjectStore();
 const suggestionStore = useSuggestionStore();
 
+const showSearchBar = inject(showSearchBarKey)!;
+const setShowSearchBar = inject(setShowSearchBarKey)!;
+
 const projectList = ref<Project[]>([]);
 const showModal = ref<boolean>(false);
 const projectIdToRemove = ref<string | null>(null);
-const showSearchBar = ref<boolean>(false);
 const query = ref<string>('');
 const searcherdQuery = ref<string>('');
 
@@ -77,10 +79,6 @@ const cancelRemoval = () => {
   projectIdToRemove.value = null;
 }
 
-const setShowSearchBar = (value: boolean) => {
-  showSearchBar.value = value;
-}
-
 const searchProjects = (query: string) => {
   suggestionStore.addSuggestion(query);
   setShowSearchBar(false);
@@ -105,17 +103,8 @@ watch([onlyFavorites, sortOption], () => {
       @removeSuggestion="removeSuggestion"
       v-model="query"
     />
-    <div v-show="!showSearchBar" class="topbar position-relative">
-      <img :src="pageLogo" alt="logo do gerenciador de projetos" width="72" height="72">
-      <div class="page-title">
-        Gerenciador de Projetos
-      </div>
-      <div class="search-icon" @click="setShowSearchBar(true)">
-        <i class="bi bi-search"></i>
-      </div>
-    </div>
     <!-- Header com quantidade total de projetos -->
-    <header class="p-4 bg-light d-flex justify-content-between align-items-center">
+    <header class="p-4 d-flex justify-content-between align-items-center">
       <!-- Título do header -->
       <div class="d-flex align-items-center gap-1">
         <h1 class="fs-4 m-0" style="font-size: 24px; font-weight: 600;">

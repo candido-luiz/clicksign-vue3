@@ -22,7 +22,7 @@ const errors = ref({
 });
 
 const validateProjectName = () => {
-  const regex = /^[A-Za-z]+(?:\s+[A-Za-z]+){1,}$/;
+  const regex = /^\w+ \w+/;
   errors.value.projectName = regex.test(projectName.value) ? 
     '' : 
     'Por favor, digite ao menos duas palavras'
@@ -101,11 +101,11 @@ const createProject = () => {
   );
 
   projectStore.addProject(project);
-  goToHome();
+  goToProjectList();
 };
 
-const goToHome = () => {
-  router.push({name: 'home'});
+const goToProjectList = () => {
+  router.push({name: 'project-list'});
 
 }
 </script>
@@ -117,7 +117,7 @@ const goToHome = () => {
       <header class="mb-4">
         <div class="d-flex flex-column align-items-start">
           <button
-            @click="goToHome"
+            @click="goToProjectList"
             class="ps-0 btn btn-link text-decoration-none d-flex align-items-center"
           >
             <i class="bi bi-arrow-left me-2"></i> 

@@ -6,8 +6,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'project-list',
       component: () => import ('@/views/ListProjectView.vue'),
+      meta: {
+        canSearchProjects: true
+      }
     },
     {
       path: '/no-projects',
@@ -24,7 +27,7 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const projectStore = useProjectStore(); 
-  if(to.name === 'home') {
+  if(to.name === 'project-list') {
     if(!projectStore.hasProjects) {
       return { name: 'no-projects' }
     }
