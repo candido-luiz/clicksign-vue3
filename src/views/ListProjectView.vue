@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, inject, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, watch, inject } from 'vue';
 import CardProject from '@/components/CardProject.vue';
 import ModalRemoveProject from '@/components/ModalRemoveProject.vue';
 import { Project } from '@/models/Project';
@@ -9,8 +8,8 @@ import SearchBar from "@/components/SearchBar.vue";
 import { useSuggestionStore } from '@/stores/suggestion';
 import { setShowSearchBarKey, showSearchBarKey } from '@/injection-keys/keys';
 import ItemsNotFound from '@/components/ItemsNotFound.vue';
+import HeaderProject from '@/components/HeaderProject.vue';
 
-const router = useRouter();
 const projectStore = useProjectStore();
 const suggestionStore = useSuggestionStore();
 
@@ -23,7 +22,6 @@ const projectIdToRemove = ref<string | null>(null);
 const query = ref<string>('');
 const searcherdQuery = ref<string>('');
 
-const totalProjects = computed(() => projectStore.projects.length);
 
 const onlyFavorites = computed(() => {
   return projectStore.onlyFavorites;
@@ -46,20 +44,6 @@ const filteredProjectList = computed(() => {
 const suggestionList = computed(() => {
   return suggestionStore.getSuggestions;
 })
-
-const createNewProject = () => {
-  router.push({ name: 'create-project' });
-}
-
-const toggleFavoritesView = (event: Event) => {
-  const showOnlyFavorites = (event.target as HTMLInputElement).checked;
-  projectStore.setOnlyFavorites(showOnlyFavorites); 
-};
-
-const toggleSortOption = (event: Event) => {
-  const option = ((event.target as HTMLInputElement).value) as 'alphabetical' | 'newest' | 'endingSoon';
-  projectStore.setSortOption(option);
-}
 
 const resetFilters = () => {
   projectStore.setOnlyFavorites(false);
@@ -111,36 +95,8 @@ watch([onlyFavorites, sortOption], () => {
       @removeSuggestion="removeSuggestion"
       v-model="query"
     />
-    
-    <header class="p-4 d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center gap-1">
-        <h1 class="fs-4 m-0" style="font-size: 24px; font-weight: 600;">
-          Projetos 
-        </h1>
-        <span class="fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
-      </div>
 
-      <div class="d-flex align-items-center gap-4">
-        <div class="form-check form-switch flex-shrink-0">
-          <input :checked="onlyFavorites" @change="toggleFavoritesView" class="form-check-input" type="checkbox" id="favoritesSwitch">
-          <label class="form-check-label" for="favoritesSwitch">Apenas Favoritos</label>
-        </div>
-
-        <select :value="sortOption" @change="toggleSortOption" class="form-select" aria-label="Ordenar projetos">
-          <option value="alphabetical" selected>Ordem alfabética</option>
-          <option value="newest">Projetos iniciados mais recentemente</option>
-          <option value="endingSoon">Projetos próximos à data de finalização</option>
-        </select>
-
-        <button 
-          @click="createNewProject" 
-          class="btn btn-primary d-flex align-items-center flex-shrink-0"
-        >
-          <i class="bi bi-plus-circle" style="font-size: 24px; color: white;"></i>
-          <span class="ms-2">Novo projeto</span>
-        </button>
-      </div>
-    </header>
+    <HeaderProject />
 
     <main v-if="filteredProjectList.length" class="p-4">
       <TransitionGroup name="fade" tag="div" class="card-grid">
