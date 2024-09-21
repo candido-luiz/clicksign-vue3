@@ -20,12 +20,13 @@
             class="list-group-item d-flex justify-content-between align-items-center"
             v-for="(item, index) in filteredSuggestionList"
             :key="index"
+             @click="searchByHistoryItem(item)"
           >
             <div class="d-flex gap-3 align-items-center">
               <i class="bi bi-clock-history list-icon"></i>
               <span>{{ item }}</span>
             </div>
-            <div @click="removeSuggestion(index)">
+            <div @click.stop="removeSuggestion(index)">
               <i class="bi bi-x list-icon"></i>
             </div>
             
@@ -37,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, computed } from 'vue';
+import { defineEmits, computed, nextTick } from 'vue';
 
 const props = defineProps<{
   suggestions: string[];
@@ -65,6 +66,13 @@ const emitSearch = () => {
 
 const removeSuggestion = (index: number) => {
   emit('removeSuggestion', index)
+}
+
+const searchByHistoryItem = (item: string) => {
+  searchQuery.value = item;
+  nextTick(() => {
+    emitSearch();
+  });
 }
 </script>
 
