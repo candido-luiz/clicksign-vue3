@@ -50,13 +50,10 @@ const removeProject = (projectId: string) => {
 </script>
 
 <template>
-  <div class="card mb-4 shadow-sm">
-    <!-- Imagem de capa do projeto -->
+  <div class="card shadow-sm">
     <div class="position-relative">
-      <!-- Imagem de capa do projeto ou imagem padrão -->
-      <img :src="cardCoverImage" alt="Project Cover" class="card-img-top" />
+      <img :src="cardCoverImage" alt="Project Cover" class="card-img-top" height="230" />
 
-      <!-- Ícone de favoritar/desfavoritar -->
       <i
         :class="[isFavorite ? 'bi bi-star-fill' : 'bi bi-star']"
         class="position-absolute"
@@ -70,16 +67,14 @@ const removeProject = (projectId: string) => {
         @click="toggleFavorite(project.id)"
       ></i>
 
-      <!-- Dropdown de ações -->
       <div class="position-absolute" style="bottom: 17px; right: 16px;">
         <div class="dropdown">
           <button 
-            class="btn bg-white rounded-circle shadow-sm" 
+            class="card-options btn bg-white rounded-circle shadow-sm " 
             type="button" 
             id="dropdownMenuButton" 
             data-bs-toggle="dropdown" 
             aria-expanded="false"
-            style="width: 36px; height: 36px; padding: 0; display: flex; align-items: center; justify-content: center;"
           >
             <i class="bi bi-three-dots"></i>
           </button>
@@ -92,17 +87,12 @@ const removeProject = (projectId: string) => {
     </div>
 
     <div class="card-body">
-      <!-- Título do card -->
-      <!-- <h5 class="card-title">{{ project.name }}</h5> -->
       <h5 class="card-title" v-html="projectName"></h5>
 
-      <!-- Texto do cliente -->
       <p class="card-text">Cliente: {{ project.customer }}</p>
 
-      <!-- Divisor -->
       <hr />
 
-      <!-- Data de início e data final -->
       <div class="d-flex justify-content-between">
         <div>
           <strong>Data de Início:</strong> {{ formatDate(project.startDate) }}
@@ -116,9 +106,17 @@ const removeProject = (projectId: string) => {
 </template>
 
 <style scoped>
+.card-options {
+  width: 36px;
+  height: 36px; 
+  padding: 0; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
 mark{
   padding: 0;
   margin: 0;
-  background-color: #ffb23d; /* ou outra cor de destaque */
+  background-color: #ffb23d;
 }
 </style>

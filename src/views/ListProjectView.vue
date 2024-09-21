@@ -111,9 +111,8 @@ watch([onlyFavorites, sortOption], () => {
       @removeSuggestion="removeSuggestion"
       v-model="query"
     />
-    <!-- Header com quantidade total de projetos -->
+    
     <header class="p-4 d-flex justify-content-between align-items-center">
-      <!-- Título do header -->
       <div class="d-flex align-items-center gap-1">
         <h1 class="fs-4 m-0" style="font-size: 24px; font-weight: 600;">
           Projetos 
@@ -121,22 +120,18 @@ watch([onlyFavorites, sortOption], () => {
         <span class="fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
       </div>
 
-      <!-- Container para os elementos no lado direito -->
       <div class="d-flex align-items-center gap-4">
-        <!-- Switch para "Apenas Favoritos" -->
         <div class="form-check form-switch flex-shrink-0">
           <input :checked="onlyFavorites" @change="toggleFavoritesView" class="form-check-input" type="checkbox" id="favoritesSwitch">
           <label class="form-check-label" for="favoritesSwitch">Apenas Favoritos</label>
         </div>
 
-        <!-- Select para Ordenação dos projetos -->
         <select :value="sortOption" @change="toggleSortOption" class="form-select" aria-label="Ordenar projetos">
           <option value="alphabetical" selected>Ordem alfabética</option>
           <option value="newest">Projetos iniciados mais recentemente</option>
           <option value="endingSoon">Projetos próximos à data de finalização</option>
         </select>
 
-        <!-- Botão de Novo Projeto com ícone -->
         <button 
           @click="createNewProject" 
           class="btn btn-primary d-flex align-items-center flex-shrink-0"
@@ -147,17 +142,15 @@ watch([onlyFavorites, sortOption], () => {
       </div>
     </header>
 
-    <!-- Main com a listagem de cards -->
     <main v-if="filteredProjectList.length" class="p-4">
-      <TransitionGroup name="fade" tag="div" class="d-flex flex-wrap gap-4">
+      <TransitionGroup name="fade" tag="div" class="card-grid">
         <CardProject
           v-for="project in filteredProjectList"
           :key="project.id"
           :project="project"
           :projectNameQuery="query"
           :highlightProjectName="showSearchBar"
-          class="w-100"
-          style="max-width: 346px; min-width: 346px;"
+          class=""
           @removeProject="removeProject"
         />
       </TransitionGroup>
@@ -169,7 +162,6 @@ watch([onlyFavorites, sortOption], () => {
       />
     </main>
 
-    <!-- Modal de Remoção de Projeto -->
     <ModalRemoveProject
       v-if="showModal"
       :projectName="projectList.find(p => p.id === projectIdToRemove)?.name || ''"
@@ -180,29 +172,21 @@ watch([onlyFavorites, sortOption], () => {
   </div>
 </template>
 
-<style scoped>
-.topbar {
-  height: 80px;
-  background: #1C1930;
-  box-shadow: 0px 4px 4px 0 #00000040;
-  margin-bottom: 4px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
+<style scoped lang="scss">
 
-.topbar .page-title {
-  width: min-content;
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+  justify-items: center;
+  align-items: center;
+  gap: 30px;
 }
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.5s, transform 0.5s;
 }
 
-/* Define o estado inicial da entrada (opacidade zero e posição inicial) */
-.fade-enter-from, .fade-leave-to /* .fade-leave-active em versões anteriores */ {
+.fade-enter-from, .fade-leave-to {
   opacity: 0;
   transform: translateY(20px); 
 }
