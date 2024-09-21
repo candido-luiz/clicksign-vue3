@@ -34,14 +34,14 @@ const isProjectCustomerValid = computed(() => {
 const isProjectStartDateValid = computed(() => {
   return (
     projectStartDate.value && 
-    (!projectFinalDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
+    (!projectFinalDate.value || new Date(projectStartDate.value) <= new Date(projectFinalDate.value))
   );
 })
 
 const isProjectFinalDateValid = computed(() => {
   return (
     projectFinalDate.value && 
-    (!projectStartDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
+    (!projectStartDate.value || new Date(projectStartDate.value) <= new Date(projectFinalDate.value))
   );
 });
 
