@@ -15,23 +15,23 @@
           v-model="searchQuery"
           @change="emitSearch"
         >
-        <ul class="history-list list-group">
+        <TransitionGroup tag="ul" name="fade" class="history-list list-group">
           <li 
             class="list-group-item d-flex justify-content-between align-items-center"
             v-for="(item, index) in filteredSuggestionList"
             :key="index"
              @click="searchByHistoryItem(item)"
           >
-            <div class="d-flex gap-3 align-items-center">
-              <i class="bi bi-clock-history list-icon"></i>
+            <div class="d-flex gap-3 align-items-center list-icon-item">
+              <i class="bi bi-clock-history"></i>
               <span>{{ item }}</span>
             </div>
-            <div @click.stop="removeSuggestion(index)">
-              <i class="bi bi-x list-icon"></i>
+            <div @click.stop="removeSuggestion(index)" class="remove-icon">
+              <i class="bi bi-x "></i>
             </div>
             
           </li>
-        </ul>
+        </TransitionGroup>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@ const searchByHistoryItem = (item: string) => {
   font-size: 18px;
 }
 .searchbar {
-  height: 80px;
+  height: var(--clicksign-page-header-height);
   padding: .5rem 1rem;
   font-size: 1.25rem;
 }
@@ -115,9 +115,18 @@ const searchByHistoryItem = (item: string) => {
   }
 }
 
-.list-icon {
+.list-icon-item, .remove-icon {
   font-size: 18px;
 }
+
+.remove-icon {
+  transition: transform 0.3s;
+  
+  &:hover {
+    transform: scale(1.4);
+  }
+}
+
 .input-group {
   margin-top: 20px;
 }
@@ -128,5 +137,15 @@ const searchByHistoryItem = (item: string) => {
 
 .btn-outline-secondary .bi-search {
   font-size: 20px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+/* Define o estado inicial da entrada (opacidade zero e posição inicial) */
+.fade-enter-from, .fade-leave-to /* .fade-leave-active em versões anteriores */ {
+  opacity: 0;
+  transform: translateY(20px); 
 }
 </style>

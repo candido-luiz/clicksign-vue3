@@ -51,9 +51,10 @@ const setShowSearchBar = inject(setShowSearchBarKey);
     right: 64px;
     cursor: pointer;
     transition: transform 0.3s;
-  }
-  .search-icon:hover {
-    transform: scale(1.4);
+
+    &:hover {
+      transform: scale(1.4);
+    }
   }
 }
 </style>
