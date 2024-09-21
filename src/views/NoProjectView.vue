@@ -21,7 +21,6 @@ import { useRouter } from 'vue-router';
 <style scoped lang="scss">
 .no-project-container {
   height: calc(100vh - $clicksign-page-header-height);
-  padding: 42px 60px;
 }
 .no-projects {
   height: 100%;
@@ -29,11 +28,19 @@ import { useRouter } from 'vue-router';
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
   background-color: #ffffff;
 }
 h1 {
   color: $clicksign-emphasis-text-color;
   size: 24px;
   margin-bottom: 24px;
+}
+
+@media (width >= 600px) {
+  .no-project-container{
+    padding: 42px 60px;
+
+  }
 }
 </style>
