@@ -3,6 +3,7 @@ import { RouterView, useRoute, useRouter } from 'vue-router';
 import TopBar from "@/components/TopBar.vue";
 import { computed, provide, ref } from 'vue';
 import { setShowSearchBarKey, showSearchBarKey } from './injection-keys/keys';
+import GoToTopButton from '@/components/GoToTopButton.vue';
 
 const route = useRoute();
 
@@ -29,6 +30,7 @@ provide(setShowSearchBarKey, setShowSearchBar);
     :canSearchItems="canSearchItems"
   />
   <RouterView />
+  <GoToTopButton />
 </template>
 
 <style scoped>
