@@ -18,5 +18,5 @@ body, #app {
 
 body {
   font-family: 'Encode Sans Semi Expanded', sans-serif;
-  background-color: var(--clicksign-background);
+  background-color: var(--clicksign-background) !important;
 }

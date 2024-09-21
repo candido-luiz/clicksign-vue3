@@ -2,7 +2,7 @@
 import { Project } from '@/models/Project';
 import { useProjectStore } from '@/stores/project';
 import { fileToBase64 } from '@/utils/fileConverter';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -21,36 +21,63 @@ const errors = ref({
   finalDate: '',
 });
 
-const validateProjectName = () => {
+const isProjectNameValid = computed(() => {
   const regex = /^\w+ \w+/;
-  errors.value.projectName = regex.test(projectName.value) ? 
+  return regex.test(projectName.value);
+});
+
+const isProjectCustomerValid = computed(() => {
+  const regex = /\b\w{3,}\b/;
+  return regex.test(projectCustomer.value);
+})
+
+const isProjectStartDateValid = computed(() => {
+  return (
+    projectStartDate.value && 
+    (!projectFinalDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
+  );
+})
+
+const isProjectFinalDateValid = computed(() => {
+  return (
+    projectFinalDate.value && 
+    (!projectStartDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
+  );
+});
+
+const formIsInvalid = computed(() => {
+  return (
+    !isProjectNameValid.value ||
+    !isProjectCustomerValid.value ||
+    !isProjectStartDateValid.value ||
+    !isProjectFinalDateValid.value
+  )
+});
+
+const disabledSaveButton = computed(() => {
+  return formIsInvalid.value;
+});
+
+const validateProjectName = () => {
+  errors.value.projectName = isProjectNameValid.value ? 
     '' : 
     'Por favor, digite ao menos duas palavras'
 }
 
 const validateProjectCustomer = () => {
-  const regex = /\b\w{3,}\b/;
-  errors.value.customer = regex.test(projectCustomer.value) ? 
+  errors.value.customer = isProjectCustomerValid.value ? 
     '' : 
     'Por favor, digite ao menos uma palavra'
 }
 
 const validateProjectStartDate = () => {
-  const validStartDate = (
-    projectStartDate.value && 
-    (!projectFinalDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
-  );
-  errors.value.startDate = validStartDate ? 
+  errors.value.startDate = isProjectStartDateValid.value ? 
     '' : 
     'Selecione uma data válida'
 }
 
 const validateProjectFinalDate = () => {
-  const validFinalDate = (
-    projectFinalDate.value && 
-    (!projectStartDate.value || new Date(projectStartDate.value) < new Date(projectFinalDate.value))
-  );
-  errors.value.finalDate = validFinalDate ? 
+  errors.value.finalDate = isProjectFinalDateValid.value ? 
     '' : 
     'Selecione uma data válida'
 }
@@ -61,8 +88,7 @@ const validateFormData = () => {
   validateProjectStartDate();
   validateProjectFinalDate();
 
-  const formIsValid = !Object.values(errors.value).some(error => !!error);
-  return formIsValid;
+  return !formIsInvalid.value;
 };
 
 const submitForm = () => {
@@ -111,7 +137,7 @@ const goToProjectList = () => {
 </script>
 
 <template>
-  <div class="container d-flex justify-content-center min-vh-100">
+  <div class="container d-flex justify-content-center full-height">
     <div class="d-flex flex-column w-100">
       <!-- Header -->
       <header class="mb-4">
@@ -205,6 +231,7 @@ const goToProjectList = () => {
            <button
              type="submit"
              class="btn btn-primary w-100"
+             :disabled="disabledSaveButton"
            >
              Salvar projeto
            </button>
@@ -214,6 +241,8 @@ const goToProjectList = () => {
   </div>
 </template>
 
-<style scoped>
-/* Adicione quaisquer estilos adicionais necessários */
+<style scoped lang="scss">
+.full-height {
+  height: calc(100vh - $clicksign-page-header-height);
+}
 </style>
