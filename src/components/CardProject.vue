@@ -4,6 +4,7 @@ import { Project } from '@/models/Project'; // Importe o modelo Project
 import defaultCoverImage from '@/assets/images/default-card-background.png';
 import { useProjectStore } from '@/stores/project';
 import { useRouter } from 'vue-router';
+import dayjs from '@/utils/dayjs';
 
 const props = defineProps<{
   project: Project;
@@ -18,7 +19,6 @@ const emit = defineEmits<{
 const router = useRouter();
 const { toggleFavorite } = useProjectStore();
 
-// Função para formatar a data
 
 const cardCoverImage = computed(() => {
   return props.project.coverImage?.url || defaultCoverImage;
@@ -37,7 +37,7 @@ const projectName = computed(() => {
 const isFavorite = computed(() => props.project.isFavorite);
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('pt-BR').format(new Date(date));
+  return dayjs(date).format('DD [de] MMMM [de] YYYY');
 };
 
 const editProject = (projectId: string) => {
@@ -99,12 +99,18 @@ const removeProject = (projectId: string) => {
 
       <hr />
 
-      <div class="d-flex justify-content-between">
-        <div>
-          <strong>Data de Início:</strong> {{ formatDate(project.startDate) }}
+      <div class="d-flex flex-column gap-2">
+        <div class="d-flex gap-2" title="Data de início">
+          <span>
+            <i class="bi bi-calendar"></i>
+          </span>
+          <span>{{ formatDate(project.startDate) }}</span>
         </div>
-        <div>
-          <strong>Data Final:</strong> {{ formatDate(project.finalDate) }}
+         <div class="d-flex gap-2" title="Data final">
+          <span>
+            <i class="bi bi-calendar-check"></i>
+          </span>
+          <span>{{ formatDate(project.finalDate) }}</span>
         </div>
       </div>
     </div>
