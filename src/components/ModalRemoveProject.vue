@@ -13,8 +13,8 @@
           <p class="mb-3 text-center">Essa ação removerá definitivamente o projeto:</p>
           <h2 class="mb-4 text-center" style="font-size: 24px;">{{ projectName }}</h2>
           <div class="d-flex gap-2">
-            <button class="btn btn-secondary" @click="$emit('cancel')">Cancelar</button>
-            <button class="btn btn-primary" @click="confirmRemoval">Confirmar</button>
+            <button id="cancelarRemocao" class="btn btn-secondary" @click="$emit('cancel')">Cancelar</button>
+            <button id="confirmarRemocao" class="btn btn-primary" @click="confirmRemoval">Confirmar</button>
           </div>
         </div>
       </div>
