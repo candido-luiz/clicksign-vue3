@@ -83,15 +83,23 @@ const validateProjectCustomer = () => {
 }
 
 const validateProjectStartDate = () => {
-  errors.value.startDate = isProjectStartDateValid.value ? 
-    '' : 
-    'Selecione uma data válida'
+  if(isProjectStartDateValid.value) {
+    errors.value.startDate = ''
+    return
+  }
+  errors.value.startDate = projectStartDate.value ? 
+    'A data de início deve ser antes da data final' :
+    'Selecione uma data válida';
 }
 
 const validateProjectFinalDate = () => {
-  errors.value.finalDate = isProjectFinalDateValid.value ? 
-    '' : 
-    'Selecione uma data válida'
+  if(isProjectFinalDateValid.value) {
+    errors.value.finalDate = '';
+    return
+  }
+  errors.value.finalDate = projectFinalDate.value ? 
+    'A data final deve ser depois da data de início' :
+    'Selecione uma data válida';
 }
 
 const validateFormData = () => {
@@ -252,7 +260,7 @@ watch(isEditProjectView, value => {
                  type="date"
                  id="projectStartDate"
                  v-model="projectStartDate"
-                 @blur="validateProjectStartDate"
+                 @change="validateProjectStartDate"
                  class="form-control"
                 :class="{'is-invalid' : !!errors.startDate}"
                />
@@ -266,7 +274,7 @@ watch(isEditProjectView, value => {
                  type="date"
                  id="projectFinalDate"
                  v-model="projectFinalDate"
-                 @blur="validateProjectFinalDate"
+                 @change="validateProjectFinalDate"
                  class="form-control"
                 :class="{'is-invalid' : !!errors.finalDate}"
                />
