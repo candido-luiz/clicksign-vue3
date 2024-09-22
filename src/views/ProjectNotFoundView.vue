@@ -11,7 +11,6 @@ import { useRouter } from 'vue-router';
   <div class="no-project-container">
     <div class="container no-projects">
       <h1>Projeto não foi encontrado</h1>
-      <p>Clique no botão abaixo para criar o primeiro e gerenciá-lo.</p>
       <button @click="createNewProject" class="btn btn-primary" type="button">Voltar para o início</button>
     </div>
   </div>

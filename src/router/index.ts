@@ -5,6 +5,13 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/:pathMatch(.*)*',
+      component: () => import ('@/views/PageNotFoundView.vue'),
+      meta: {
+        hideTopBar: true
+      },
+    },
+    {
       path: '/',
       name: 'project-list',
       component: () => import ('@/views/ListProjectView.vue'),
@@ -18,8 +25,8 @@ const router = createRouter({
       component: () => import ('@/views/NoProjectView.vue'),
     },
     {
-      path: '/not-found',
-      name: 'not-found',
+      path: '/project-not-found',
+      name: 'project-not-found',
       component: () => import ('@/views/ProjectNotFoundView.vue')
     },
     {
@@ -31,12 +38,12 @@ const router = createRouter({
         if(projectId && typeof projectId === 'string') {
           const projectStore = useProjectStore();
           if(!projectStore.projectExistsOnList(projectId)) {
-            return { name: 'not-found'}
+            return { name: 'project-not-found'}
           }
         }
 
       }
-    }
+    },
   ]
 });
 

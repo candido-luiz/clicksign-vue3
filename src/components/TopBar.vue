@@ -19,7 +19,7 @@ const setShowSearchBar = inject(setShowSearchBarKey);
 </script>
 
 <template>
-  <div v-show="showTopbar" class="topbar position-relative">
+  <header v-show="showTopbar" class="topbar position-relative">
     <img :src="pageLogo" alt="logo do gerenciador de projetos" width="72" height="72">
     <div class="page-title">
       Gerenciador de Projetos
@@ -27,7 +27,7 @@ const setShowSearchBar = inject(setShowSearchBarKey);
     <div v-if="canSearchItems" class="search-icon" @click="setShowSearchBar!(true)">
       <i class="bi bi-search"></i>
     </div>
-  </div>
+  </header>
 </template>
 
 <style scoped lang="scss">

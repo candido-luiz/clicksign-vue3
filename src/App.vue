@@ -10,11 +10,13 @@ const route = useRoute();
 const showSearchBar = ref<boolean>(false);
 
 const showTopbar = computed(() => {
-  return !showSearchBar.value;
-})
+  return !showSearchBar.value && !route.meta.hideTopBar;
+});
+
 const canSearchItems = computed(() => {
   return !!route.meta.canSearchProjects;
-})
+});
+
 const setShowSearchBar = (value: boolean) => {
   showSearchBar.value = value;
 }
