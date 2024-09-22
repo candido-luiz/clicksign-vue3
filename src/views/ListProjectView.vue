@@ -106,7 +106,7 @@ watch([onlyFavorites, sortOption], () => {
     <HeaderProject />
 
     <main v-if="filteredProjectList.length" class="p-4">
-      <TransitionGroup name="fade" tag="div" class="card-grid">
+      <div v-auto-animate class="card-grid">
         <CardProject
           v-for="project in filteredProjectList"
           :key="project.id"
@@ -116,7 +116,7 @@ watch([onlyFavorites, sortOption], () => {
           class=""
           @removeProject="removeProject"
         />
-      </TransitionGroup>
+      </div>
     </main>
 
     <main v-else>
@@ -143,14 +143,5 @@ watch([onlyFavorites, sortOption], () => {
   justify-items: center;
   align-items: center;
   gap: 30px;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-  transform: translateY(20px); 
 }
 </style>

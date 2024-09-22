@@ -14,7 +14,7 @@
           v-model="searchQuery"
           @change="emitSearch"
         >
-        <TransitionGroup tag="ul" name="fade" class="history-list list-group">
+        <div v-auto-animate class="history-list list-group">
           <li 
             class="list-group-item d-flex justify-content-between align-items-center"
             v-for="(item, index) in filteredSuggestionList"
@@ -30,7 +30,7 @@
             </div>
             
           </li>
-        </TransitionGroup>
+        </div>
       </div>
     </div>
   </div>
@@ -169,15 +169,5 @@ onBeforeUnmount(() => {
 
 .btn-outline-secondary .bi-search {
   font-size: 20px;
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-/* Define o estado inicial da entrada (opacidade zero e posição inicial) */
-.fade-enter-from, .fade-leave-to /* .fade-leave-active em versões anteriores */ {
-  opacity: 0;
-  transform: translateY(20px); 
 }
 </style>

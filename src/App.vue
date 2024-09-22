@@ -30,12 +30,13 @@ provide(setShowSearchBarKey, setShowSearchBar);
     :canSearchItems="canSearchItems"
   />
   <RouterView v-slot="{ Component }">
-    <Transition 
+    <div
+      v-auto-animate 
       name="smooth-fade" 
       mode="out-in"
     >
       <component :is="Component"/>
-    </Transition>
+    </div>
   </RouterView>
   <GoToTopButton />
 </template>

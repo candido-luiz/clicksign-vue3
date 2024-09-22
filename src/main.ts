@@ -8,6 +8,8 @@ import './assets/scss/bootstrap/custom.scss';
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { piniaPluginPersist } from "@/plugins/pinia/persistPlugin";
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
+
 import App from './App.vue'
 import router from './router'
 
@@ -19,6 +21,6 @@ pinia.use(piniaPluginPersist);
 
 app.use(pinia);
 app.use(router);
-// app.use(bootstrap);
+app.use(autoAnimatePlugin);
 
 app.mount('#app')
