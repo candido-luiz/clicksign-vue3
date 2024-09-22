@@ -67,6 +67,7 @@ const createNewProject = () => {
       </div>
   
       <button 
+        id="createProject"
         @click="createNewProject" 
         class="btn btn-primary d-flex align-items-center flex-shrink-0"
       >
@@ -89,6 +90,7 @@ const createNewProject = () => {
       </select>
 
       <button 
+        id="createProjectDesktop"
         @click="createNewProject" 
         class="btn btn-primary d-flex align-items-center flex-shrink-0"
       >

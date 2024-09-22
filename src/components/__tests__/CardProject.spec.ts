@@ -8,7 +8,6 @@ import { useProjectStore } from '@/stores/project';
 
 
 vi.mock('vue-router', () => ({
-  useRoute: vi.fn(),
   useRouter: vi.fn(() => ({
     push: () => {}
   }))
