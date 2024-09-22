@@ -9,8 +9,8 @@ export class Project {
   public coverImage?: string;
   public isFavorite?: boolean;
   
-  constructor(name: string, customer: string, startDate: Date, finalDate: Date, coverImage?: string) {
-    this.id = uuidv4();
+  constructor(name: string, customer: string, startDate: Date, finalDate: Date, coverImage?: string, id?: string) {
+    this.id = id || uuidv4();
     this.isFavorite = false;
     this.name = name;
     this.customer = customer;

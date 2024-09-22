@@ -6,6 +6,7 @@
           <i class="bi bi-search"></i>
         </span>
         <input 
+          id="searchInput"
           ref="searchInput"
           class="form-control searchbar" 
           type="text" 

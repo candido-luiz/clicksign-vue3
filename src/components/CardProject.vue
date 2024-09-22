@@ -3,6 +3,7 @@ import { computed, defineProps } from 'vue';
 import { Project } from '@/models/Project'; // Importe o modelo Project
 import defaultCoverImage from '@/assets/images/default-card-background.png';
 import { useProjectStore } from '@/stores/project';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
   project: Project;
@@ -14,7 +15,7 @@ const emit = defineEmits<{
   (e: 'removeProject', projectId: string): void;
 }>();
 
-
+const router = useRouter();
 const { toggleFavorite } = useProjectStore();
 
 // Função para formatar a data
@@ -40,7 +41,12 @@ const formatDate = (date: Date) => {
 };
 
 const editProject = (projectId: string) => {
-
+  router.push({
+    name: 'form-project',
+    params: {
+      projectId: projectId
+    }
+  });
 }
 
 const removeProject = (projectId: string) => {
@@ -79,8 +85,8 @@ const removeProject = (projectId: string) => {
             <i class="bi bi-three-dots"></i>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#" @click="editProject(project.id)">Editar</a></li>
-            <li><a class="dropdown-item text-danger" href="#" @click="removeProject(project.id)">Remover</a></li>
+            <li><span role="button" class="dropdown-item" @click="editProject(project.id)">Editar</span></li>
+            <li><span role="button" class="dropdown-item text-danger"@click="removeProject(project.id)">Remover</span></li>
           </ul>
         </div>
       </div>

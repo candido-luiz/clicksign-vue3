@@ -26,7 +26,7 @@ const toggleSortOption = (event: Event) => {
 }
 
 const createNewProject = () => {
-  router.push({ name: 'create-project' });
+  router.push({ name: 'form-project' });
 }
 
 </script>
@@ -78,11 +78,11 @@ const createNewProject = () => {
 
     <div class="desktop-header-options align-items-center gap-4">
       <div class="form-check form-switch flex-shrink-0">
-        <input :checked="onlyFavorites" @change="toggleFavoritesView" class="form-check-input" type="checkbox" id="favoritesSwitch">
+        <input :checked="onlyFavorites" @change="toggleFavoritesView" class="form-check-input" type="checkbox" id="favoritesSwitchDesktop">
         <label class="form-check-label" for="favoritesSwitch">Apenas Favoritos</label>
       </div>
 
-      <select :value="sortOption" @change="toggleSortOption" class="form-select" aria-label="Ordenar projetos">
+      <select id="sortOptionsDesktop" :value="sortOption" @change="toggleSortOption" class="form-select" aria-label="Ordenar projetos">
         <option value="alphabetical" selected>Ordem alfabética</option>
         <option value="newest">Projetos iniciados mais recentemente</option>
         <option value="endingSoon">Projetos próximos à data de finalização</option>

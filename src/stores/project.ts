@@ -16,6 +16,11 @@ export const useProjectStore = defineStore('project', () => {
     projects.value.push(project);
   };
 
+  const getProjectById = (id: string) => {
+    return projects.value.find(project => project.id === id);
+  };
+
+
   // Remove um projeto pelo UUID
   const removeProject = (id: string) => {
     projects.value = projects.value.filter(project => project.id !== id);
@@ -39,6 +44,10 @@ export const useProjectStore = defineStore('project', () => {
 
   const setSortOption = (option: 'alphabetical' | 'newest' | 'endingSoon') => {
     sortOption.value = option;
+  }
+
+  const projectExistsOnList = (id: string) => {
+    return !!projects.value.find(project => project.id === id)
   }
 
   const favoriteProjects = computed(() => {
@@ -119,5 +128,7 @@ export const useProjectStore = defineStore('project', () => {
     onlyFavorites,
     setOnlyFavorites,
     setSortOption,
+    projectExistsOnList,
+    getProjectById,
   }
 });

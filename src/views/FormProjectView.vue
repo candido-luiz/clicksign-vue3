@@ -2,9 +2,11 @@
 import { Project } from '@/models/Project';
 import { useProjectStore } from '@/stores/project';
 import { fileToBase64 } from '@/utils/fileConverter';
-import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import dayjs from '@/utils/dayjs/index';
 
+const route = useRoute();
 const router = useRouter();
 const projectStore = useProjectStore();
 
@@ -20,6 +22,14 @@ const errors = ref({
   startDate: '',
   finalDate: '',
 });
+
+const projectIdParam = computed (() => {
+  return route.params.projectId as string;
+})
+
+const isEditProjectView = computed(() => {
+  return !!projectIdParam.value;
+})
 
 const isProjectNameValid = computed(() => {
   const regex = /^\w+ \w+/;
@@ -93,7 +103,11 @@ const validateFormData = () => {
 
 const submitForm = () => {
   if (validateFormData()) {
-    createProject();
+    if(isEditProjectView.value) {
+      editProject();
+    } else {
+      createProject();
+    }
   }
 };
 
@@ -117,29 +131,51 @@ const handleFileChange = async (event: Event) => {
   }
 };
 
-const createProject = () => {
-  const project = new Project(
+const generateProjectInstance = (id?: string) => {
+  return new Project(
     projectName.value,
     projectCustomer.value,
     new Date(projectStartDate.value),
     new Date(projectFinalDate.value),
-    projectCoverUlr.value
+    projectCoverUlr.value,
+    id
   );
+}
 
+const createProject = () => {
+  const project = generateProjectInstance();
   projectStore.addProject(project);
+  goToProjectList();
+};
+
+const editProject = () => {
+  const updatedProject = generateProjectInstance(projectIdParam.value);
+  projectStore.editProject(projectIdParam.value, updatedProject);
   goToProjectList();
 };
 
 const goToProjectList = () => {
   router.push({name: 'project-list'});
-
 }
+
+watch(isEditProjectView, value => {
+  if(value) {
+    const projectToEdit = projectStore.getProjectById(projectIdParam.value);
+    if(projectToEdit) {
+      const { name, customer, startDate, finalDate } = projectToEdit;
+      projectName.value = name;
+      projectCustomer.value = customer;
+      projectStartDate.value = dayjs(startDate).format('YYYY-MM-DD');
+      projectFinalDate.value = dayjs(finalDate).format('YYYY-MM-DD');
+    }
+  }
+}, { immediate: true})
 </script>
 
 <template>
   <div class="container d-flex justify-content-center full-height">
     <div class="d-flex flex-column w-100">
-      <!-- Header -->
+      
       <header class="mb-4">
         <div class="d-flex flex-column align-items-start">
           <button
@@ -153,7 +189,7 @@ const goToProjectList = () => {
         </div>
       </header>
 
-      <!-- Formulário -->
+      
        <div class="border rounded-2">
          <form @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
            <div class="mb-3">
@@ -228,12 +264,21 @@ const goToProjectList = () => {
              />
            </div>
    
-           <button
-             type="submit"
-             class="btn btn-primary w-100"
-             :disabled="disabledSaveButton"
+          <button
+              v-if="!isEditProjectView"
+              type="submit"
+              class="btn btn-primary w-100"
+              :disabled="disabledSaveButton"
+          >
+            Salvar projeto
+           </button>
+          <button
+            v-else 
+            type="submit"
+            class="btn btn-primary w-100"
+            :disabled="disabledSaveButton"
            >
-             Salvar projeto
+             Editar projeto
            </button>
          </form>
        </div>

@@ -10,7 +10,7 @@ const router = createRouter({
       component: () => import ('@/views/ListProjectView.vue'),
       meta: {
         canSearchProjects: true
-      }
+      },
     },
     {
       path: '/no-projects',
@@ -18,9 +18,24 @@ const router = createRouter({
       component: () => import ('@/views/NoProjectView.vue'),
     },
     {
-      path: '/create-project',
-      name: 'create-project',
-      component: () => import('@/views/CreateProjectView.vue'),
+      path: '/not-found',
+      name: 'not-found',
+      component: () => import ('@/views/ProjectNotFoundView.vue')
+    },
+    {
+      path: '/form-project/:projectId?',
+      name: 'form-project',
+      component: () => import('@/views/FormProjectView.vue'),
+      beforeEnter(to){
+        const projectId = to.params.projectId;
+        if(projectId && typeof projectId === 'string') {
+          const projectStore = useProjectStore();
+          if(!projectStore.projectExistsOnList(projectId)) {
+            return { name: 'not-found'}
+          }
+        }
+
+      }
     }
   ]
 });
