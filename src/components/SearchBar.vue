@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, computed, nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
+import { computed, nextTick, onMounted, onBeforeUnmount, ref } from 'vue';
 
 const props = defineProps<{
   suggestions: string[];

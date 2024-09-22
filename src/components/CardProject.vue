@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { Project } from '@/models/Project'; // Importe o modelo Project
 import defaultCoverImage from '@/assets/images/default-card-background.png';
 import { useProjectStore } from '@/stores/project';
