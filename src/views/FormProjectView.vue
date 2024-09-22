@@ -232,7 +232,7 @@ watch(isEditProjectView, value => {
        <div class="border rounded-2">
          <form @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
            <div class="mb-3">
-             <label for="projectName" class="form-label">Nome do projeto</label>
+             <label for="projectName" class="form-label">Nome do projeto (Obrigatório)</label>
              <input
                type="text"
                id="projectName"
@@ -247,7 +247,7 @@ watch(isEditProjectView, value => {
            </div>
    
            <div class="mb-3">
-             <label for="projectCustomer" class="form-label">Cliente</label>
+             <label for="projectCustomer" class="form-label">Cliente (Obrigatório)</label>
              <input
                type="text"
                id="projectCustomer"
@@ -263,7 +263,7 @@ watch(isEditProjectView, value => {
    
            <div class="row mb-3">
              <div class="col">
-               <label for="projectStartDate" class="form-label">Data de Início</label>
+               <label for="projectStartDate" class="form-label">Data de Início (Obrigatório)</label>
                <input
                  type="date"
                  id="projectStartDate"
@@ -277,7 +277,7 @@ watch(isEditProjectView, value => {
               </div>
              </div>
              <div class="col">
-               <label for="projectFinalDate" class="form-label">Data final</label>
+               <label for="projectFinalDate" class="form-label">Data final (Obrigatório)</label>
                <input
                  type="date"
                  id="projectFinalDate"
