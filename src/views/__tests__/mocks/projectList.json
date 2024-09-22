@@ -1,0 +1,62 @@
+[
+  {
+      "id": "1",
+      "name": "Project Alpha",
+      "customer": "Customer A",
+      "startDate": "2023-01-15T00:00:00.000Z",
+      "finalDate": "2023-06-30T00:00:00.000Z",
+      "coverImage": {
+          "url": "https://example.com/cover-alpha.png",
+          "name": "Alpha Cover"
+      },
+      "isFavorite": true
+  },
+  {
+      "id": "2",
+      "name": "Project Beta",
+      "customer": "Customer B",
+      "startDate": "2023-03-01T00:00:00.000Z",
+      "finalDate": "2023-09-15T00:00:00.000Z",
+      "coverImage": {
+          "url": "https://example.com/cover-beta.png",
+          "name": "Beta Cover"
+      },
+      "isFavorite": false
+  },
+  {
+      "id": "3",
+      "name": "Project Gamma",
+      "customer": "Customer C",
+      "startDate": "2023-04-20T00:00:00.000Z",
+      "finalDate": "2023-12-10T00:00:00.000Z",
+      "coverImage": {
+          "url": "https://example.com/cover-gamma.png",
+          "name": "Gamma Cover"
+      },
+      "isFavorite": true
+  },
+  {
+      "id": "4",
+      "name": "Project Delta",
+      "customer": "Customer D",
+      "startDate": "2023-02-05T00:00:00.000Z",
+      "finalDate": "2023-11-25T00:00:00.000Z",
+      "coverImage": {
+          "url": "https://example.com/cover-delta.png",
+          "name": "Delta Cover"
+      },
+      "isFavorite": false
+  },
+  {
+      "id": "5",
+      "name": "Project Epsilon",
+      "customer": "Customer E",
+      "startDate": "2023-05-10T00:00:00.000Z",
+      "finalDate": "2023-10-20T00:00:00.000Z",
+      "coverImage": {
+          "url": "https://example.com/cover-epsilon.png",
+          "name": "Epsilon Cover"
+      },
+      "isFavorite": true
+  }
+]
