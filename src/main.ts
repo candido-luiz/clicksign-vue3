@@ -1,4 +1,3 @@
-import './assets/tailwind/index.css';
 import './assets/base.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
