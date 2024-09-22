@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView, useRoute, useRouter } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import TopBar from "@/components/TopBar.vue";
 import { computed, provide, ref } from 'vue';
 import { setShowSearchBarKey, showSearchBarKey } from './injection-keys/keys';
@@ -29,10 +29,23 @@ provide(setShowSearchBarKey, setShowSearchBar);
     :showTopbar="showTopbar"
     :canSearchItems="canSearchItems"
   />
-  <RouterView />
+  <RouterView v-slot="{ Component }">
+    <Transition 
+      name="smooth-fade" 
+      mode="out-in"
+    >
+      <component :is="Component"/>
+    </Transition>
+  </RouterView>
   <GoToTopButton />
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.smooth-fade-enter-active, .smooth-fade-leave-active {
+  transition: opacity 0.2s ease-in-out;
+}
 
+.smooth-fade-enter-from, .smooth-fade-leave-to {
+  opacity: 0;
+}
 </style>
