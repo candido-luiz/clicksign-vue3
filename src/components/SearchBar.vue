@@ -1,7 +1,7 @@
 <template>
   <div class="row mx-0">
     <div class="col-12 px-0">
-      <div class="searchbox input-group">
+      <div ref="searchBox" class="searchbox input-group">
         <span class="input-group-text" id="basic-addon1">
           <i class="bi bi-search"></i>
         </span>
@@ -43,6 +43,7 @@ const props = defineProps<{
   suggestions: string[];
 }>();
 
+const searchBox = ref<HTMLElement>();
 const searchInput = ref<HTMLElement>();
 const searchQuery = defineModel<string>({required: true});
 const emit = defineEmits<{
@@ -84,7 +85,7 @@ const handleKeyUp = (event: KeyboardEvent) => {
 }
 
 const handleClickOutside = (event: Event) => {
-  const searchboxElement = searchInput.value;
+  const searchboxElement = searchBox.value;
   if (searchboxElement && !searchboxElement.contains(event.target as Node)) {
     emit("cancel"); 
   }
@@ -112,6 +113,14 @@ onBeforeUnmount(() => {
 .searchbox {
   position: relative;
   margin-top: 0 !important;
+
+  &:focus-within > *{
+    border-bottom: 1px solid $clicksign-button-primary-color;
+  }
+
+  & input::placeholder {
+    font-size: 18px;
+  }
 }
 .input-group > input {
   border-left: 0;
@@ -121,13 +130,14 @@ onBeforeUnmount(() => {
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.searchbox input::placeholder {
-  font-size: 18px;
-}
+
 .searchbar {
   height: $clicksign-page-header-height;
   padding: .5rem 1rem;
   font-size: 1.25rem;
+  &:focus {
+    box-shadow: none !important;
+  }
 }
 .history-list {
   position: absolute;
