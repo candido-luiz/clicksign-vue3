@@ -25,7 +25,7 @@
               <i class="bi bi-clock-history"></i>
               <span>{{ item }}</span>
             </div>
-            <div @click.stop="removeSuggestion(index)" class="remove-icon">
+            <div id="removeFromHistory" @click.stop="removeSuggestion(index)" class="remove-icon">
               <i class="bi bi-x "></i>
             </div>
             

@@ -1,5 +1,5 @@
-import { shallowMount, VueWrapper } from "@vue/test-utils";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { shallowMount } from "@vue/test-utils";
+import { describe, expect, it } from "vitest";
 import ModalRemoveProject from "../ModalRemoveProject.vue";
 
 describe('ModalRemoveProject', () => {
