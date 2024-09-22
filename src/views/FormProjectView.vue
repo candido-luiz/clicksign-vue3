@@ -4,10 +4,12 @@ import { useProjectStore } from '@/stores/project';
 import { fileToBase64} from '@/utils/fileConverter';
 import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from '@/composables/useToast';
 import dayjs from '@/utils/dayjs/index';
 
 const route = useRoute();
 const router = useRouter();
+const { notify } = useToast();
 const projectStore = useProjectStore();
 
 const projectName = ref<string>('');
@@ -115,8 +117,14 @@ const submitForm = () => {
   if (validateFormData()) {
     if(isEditProjectView.value) {
       editProject();
+      notify({
+        message: "Projeto alterado com sucesso!",
+      });
     } else {
       createProject();
+      notify({
+        message: "Projeto criado com sucesso!",
+      });
     }
   }
 };

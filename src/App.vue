@@ -30,11 +30,7 @@ provide(setShowSearchBarKey, setShowSearchBar);
     :canSearchItems="canSearchItems"
   />
   <RouterView v-slot="{ Component }">
-    <div
-      v-auto-animate 
-      name="smooth-fade" 
-      mode="out-in"
-    >
+    <div v-auto-animate >
       <component :is="Component"/>
     </div>
   </RouterView>
