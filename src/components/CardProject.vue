@@ -21,7 +21,7 @@ const { toggleFavorite } = useProjectStore();
 // Função para formatar a data
 
 const cardCoverImage = computed(() => {
-  return props.project.coverImage || defaultCoverImage;
+  return props.project.coverImage?.url || defaultCoverImage;
 });
 
 const projectName = computed(() => {

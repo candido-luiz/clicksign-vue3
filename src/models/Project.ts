@@ -6,10 +6,16 @@ export class Project {
   public customer: string;
   public startDate: Date;
   public finalDate: Date;
-  public coverImage?: string;
+  public coverImage?: {
+    url: string;
+    name: string;
+  };
   public isFavorite?: boolean;
   
-  constructor(name: string, customer: string, startDate: Date, finalDate: Date, coverImage?: string, id?: string) {
+  constructor(name: string, customer: string, startDate: Date, finalDate: Date, coverImage?: {
+    url: string;
+    name: string;
+  }, id?: string) {
     this.id = id || uuidv4();
     this.isFavorite = false;
     this.name = name;
@@ -18,11 +24,4 @@ export class Project {
     this.finalDate = finalDate;
     this.coverImage = coverImage;
   }
-
-  // // Exemplo de método de regra de negócio
-  // isValid(): boolean {
-  //   return this.name.trim() !== '' && this.customer.trim() !== '';
-  // }
-
-  // // Outros métodos relacionados ao projeto
 }
