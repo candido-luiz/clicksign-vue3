@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router';
 
   const router = useRouter()
   const createNewProject = () => {
-    router.push({name: 'create-project'});
+    router.push({name: 'form-project'});
   }
 </script>
 
