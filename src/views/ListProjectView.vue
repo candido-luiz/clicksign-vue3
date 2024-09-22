@@ -31,6 +31,10 @@ const sortOption = computed(() => {
   return projectStore.sortOption;
 });
 
+const allProjects = computed(() => {
+  return projectStore.projects;
+})
+
 const filteredProjectList = computed(() => {
   if(searcherdQuery.value) {
     return projectList.value.filter(project => {
@@ -119,10 +123,26 @@ watch([onlyFavorites, sortOption], () => {
       </div>
     </main>
 
+    <main v-else-if="allProjects.length">
+      <ItemsNotFound 
+        title="Nenhum projeto encontrado"
+      >
+        <p>Não foram encontrados resultados para os filtros selecionados</p>
+        <template #action>
+          <button @click="resetFilters" class="btn btn-primary" type="button">Limpar filtros</button>
+        </template>
+      </ItemsNotFound>
+    </main>
+
     <main v-else>
       <ItemsNotFound 
-        @resetFilters="resetFilters"
-      />
+        title="Projetos removidos"
+      >
+        <p>Todos os projetos foram excluídos</p>
+        <template #action>
+          <RouterLink to="/form-project" role="button" class="btn btn-primary" >Criar novo projeto</RouterLink>
+        </template>
+      </ItemsNotFound>
     </main>
 
     <ModalRemoveProject

@@ -1,18 +1,19 @@
 <script setup lang="ts">
 
-const emit = defineEmits<{
-  (e: 'resetFilters'): void;
-}>();
+defineProps({
+  title: {
+    type: String,
+    required: true
+  }
+})
 
-const resetFilters = () => {
-  emit("resetFilters")
-}
 </script>
 
 <template>
   <div class="no-items">
-    <h1>Nenhum item encontrado</h1>
-    <button @click="resetFilters" class="btn btn-primary" type="button">Limpar filtros</button>
+    <h1>{{ title }}</h1>
+    <slot></slot>
+    <slot name="action"></slot>
   </div>
 </template>
 
@@ -24,6 +25,8 @@ const resetFilters = () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 170px;
+
 }
 h1 {
   color: $clicksign-emphasis-text-color;

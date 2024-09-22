@@ -11,9 +11,9 @@ export default defineComponent({
     <div class="text-center">
       <h1 class="display-1 fw-bold">404</h1>
       <p class="lead">Página não encontrada</p>
-      <router-link to="/" class="btn btn-primary mt-4">
+      <RouterLink to="/" class="btn btn-primary mt-4">
         Voltar para a Página Inicial
-      </router-link>
+      </RouteRLink>
     </div>
   </div>
 </template>
