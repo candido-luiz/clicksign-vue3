@@ -1,8 +1,11 @@
 @import "bootstrap/scss/functions";
 @import "../variables";
+
+//customization
 @import "./buttons.scss/customButton";
 @import "./switches/switch";
 @import "./offcanvas/offcanvas";
+@import "./forms/formFeedback";
 
 $primary: $clicksign-button-primary-color;
 

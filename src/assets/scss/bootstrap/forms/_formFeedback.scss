@@ -1,0 +1,7 @@
+$form-feedback-icon-invalid: unset;
+
+.form-control {
+  &.is-invalid {
+    padding-right: 0.75rem !important;
+  }
+}
