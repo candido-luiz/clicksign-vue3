@@ -85,8 +85,8 @@ const removeProject = (projectId: string) => {
             <i class="bi bi-three-dots"></i>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><span role="button" class="dropdown-item" @click="editProject(project.id)">Editar</span></li>
-            <li><span role="button" class="dropdown-item text-danger"@click="removeProject(project.id)">Remover</span></li>
+            <li><span role="button" id="editProject" class="dropdown-item" @click="editProject(project.id)">Editar</span></li>
+            <li><span role="button" id="removeProject" class="dropdown-item text-danger"@click="removeProject(project.id)">Remover</span></li>
           </ul>
         </div>
       </div>
