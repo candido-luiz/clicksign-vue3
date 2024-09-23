@@ -2,10 +2,10 @@ version: '3'
 
 services:
   vue-clicksign:
-    container_name: vue-clicksign_dev
+    container_name: vue-clicksign
     build:
       context: .
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ./src:/app/src
       - ./public:/app/public
