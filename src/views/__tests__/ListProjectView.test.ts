@@ -1,4 +1,4 @@
-import { mount, shallowMount, VueWrapper , config} from "@vue/test-utils";
+import { mount, shallowMount, VueWrapper , config, RouterLinkStub} from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import ListProjectView from "../ListProjectView.vue";
 import mockProjectList from "./mocks/projectList.json";
@@ -34,6 +34,12 @@ let setShowSearchBar = vi.fn((val) => {
 
 
 describe('ListProjectView', () => {
+  config.global.stubs = {
+    RouterLink: RouterLinkStub
+  }
+  config.global.directives = {
+    'auto-animate': vi.fn()
+  }
   config.global.provide = {
     [setShowSearchBarKey]: setShowSearchBar,
     [showSearchBarKey]: showBar
