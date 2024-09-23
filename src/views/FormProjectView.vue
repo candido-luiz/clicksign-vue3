@@ -230,7 +230,7 @@ watch(isEditProjectView, value => {
 
       
        <div class="border rounded-2">
-         <form @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
+         <form id="projectForm" @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
            <div class="mb-3">
              <label for="projectName" class="form-label">Nome do projeto (Obrigatório)</label>
              <input
@@ -321,6 +321,7 @@ watch(isEditProjectView, value => {
    
           <button
             v-if="!isEditProjectView"
+            id="createProject"
             type="submit"
             class="btn btn-primary w-100"
             :disabled="disabledSaveButton"
@@ -329,6 +330,7 @@ watch(isEditProjectView, value => {
            </button>
           <button
             v-else 
+            id="editProject"
             type="submit"
             class="btn btn-primary w-100"
             :disabled="disabledSaveButton"
