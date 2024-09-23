@@ -48,12 +48,16 @@ const setShowSearchBar = inject(setShowSearchBarKey);
   .search-icon {
     font-size: 18px;
     position: absolute;
-    right: 64px;
+    right: 32px;
     cursor: pointer;
     transition: transform 0.3s;
 
     &:hover {
       transform: scale(1.4);
+    }
+
+    @media (width >= 500px) {
+      right: 64px;
     }
   }
 }

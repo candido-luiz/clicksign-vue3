@@ -102,10 +102,6 @@ const createNewProject = () => {
 </template>
 
 <style scoped lang="scss">
-.btn {
-  border-radius: 8px;
-}
-
 .sticky-header {
   position: sticky;
   top: 0;

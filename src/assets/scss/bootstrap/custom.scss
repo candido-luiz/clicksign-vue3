@@ -2,10 +2,11 @@
 @import "../variables";
 
 //customization
-@import "./buttons.scss/customButton";
+@import "./buttons/customButton";
 @import "./switches/switch";
 @import "./offcanvas/offcanvas";
 @import "./forms/formFeedback";
+@import "./cards/card";
 
 $primary: $clicksign-button-primary-color;
 
