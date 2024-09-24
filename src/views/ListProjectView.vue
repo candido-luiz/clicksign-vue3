@@ -9,9 +9,11 @@ import { useSuggestionStore } from '@/stores/suggestion';
 import { setShowSearchBarKey, showSearchBarKey } from '@/injection-keys/keys';
 import ItemsNotFound from '@/components/ItemsNotFound.vue';
 import HeaderProject from '@/components/HeaderProject.vue';
+import { useToast } from '@/composables/useToast';
 
 const projectStore = useProjectStore();
 const suggestionStore = useSuggestionStore();
+const { notify } = useToast();
 
 const showSearchBar = inject(showSearchBarKey)!;
 const setShowSearchBar = inject(setShowSearchBarKey)!;
@@ -66,6 +68,9 @@ const confirmRemoval = (projectId: string) => {
   projectIdToRemove.value = null;
   projectList.value = projectList.value.filter(project => {
     return project.id !== projectId;
+  });
+  notify({
+    message: "Projeto removido com sucesso!",
   });
 };
 

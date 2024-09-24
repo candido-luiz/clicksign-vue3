@@ -27,6 +27,12 @@ vi.mock('@/stores/suggestion', () => ({
   }))
 }));
 
+vi.mock('@/composables/useToast', () => ({
+  useToast: vi.fn(() => ({
+    notify: vi.fn()
+  }))
+}))
+
 let showBar: boolean = true;
 let setShowSearchBar = vi.fn((val) => {
   showBar = val
@@ -144,9 +150,11 @@ describe('ListProjectView', () => {
       expect(wrapper.vm.projectStore.removeProject).toHaveBeenCalledWith(projectId);
       expect(wrapper.vm.projectIdToRemove).toBe(null);
       expect(wrapper.vm.showModal).toBe(false);
+      expect(wrapper.vm.notify).toHaveBeenCalledWith({
+        message: "Projeto removido com sucesso!",
+      });
     });
     it('Teste emit @cancel do ModalRemoveProject', async () => {
-      const projectId = projectList[0].id
       const wrapper = shallowMountComponent();
       wrapper.vm.cancelRemoval();
       expect(wrapper.vm.projectIdToRemove).toBe(null);
