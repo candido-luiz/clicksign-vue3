@@ -30,6 +30,7 @@ import { useRouter } from 'vue-router';
   align-items: center;
   text-align: center;
   background-color: #ffffff;
+  padding: 0 10px;
 }
 h1 {
   color: $clicksign-emphasis-text-color;
