@@ -41,6 +41,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: SPA Redirect
+        run: npm run 404-spa-redirect
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
