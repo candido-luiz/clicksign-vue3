@@ -7,54 +7,12 @@ export const useProjectStore = defineStore('project', () => {
   const searchQuery = ref<string>('');
   const recentSearches = ref<string[]>([]);
   const onlyFavorites = ref<boolean>(false)
-
-  // Opções de ordenação
   const sortOption = ref<'alphabetical' | 'newest' | 'endingSoon'>('alphabetical');
-
-  // Adiciona um novo projeto
-  const addProject = (project: Project) => {
-    projects.value.push(project);
-  };
-
-  const getProjectById = (id: string) => {
-    return projects.value.find(project => project.id === id);
-  };
-
-
-  // Remove um projeto pelo UUID
-  const removeProject = (id: string) => {
-    projects.value = projects.value.filter(project => project.id !== id);
-  };
-
-  // Edita um projeto existente pelo UUID
-  const editProject = (id: string, updatedProject: Project) => {
-    const index = projects.value.findIndex(project => project.id === id);
-    if (index !== -1) {
-      projects.value[index] = updatedProject;
-    }
-  };
-
-  // Favorita ou desfavorece um projeto pelo UUID
-  const toggleFavorite = (id: string) => {
-    const project = projects.value.find(project => project.id === id);
-    if (project) {
-      project.isFavorite = !project.isFavorite;
-    }
-  };
-
-  const setSortOption = (option: 'alphabetical' | 'newest' | 'endingSoon') => {
-    sortOption.value = option;
-  }
-
-  const projectExistsOnList = (id: string) => {
-    return !!projects.value.find(project => project.id === id)
-  }
 
   const favoriteProjects = computed(() => {
     return projects.value.filter(project => project.isFavorite);
   });
 
-  // Filtra e ordena os projetos com base nas opções fornecidas
   const projectList = computed(() => {
     let filteredProjects = projects.value;
 
@@ -75,16 +33,10 @@ export const useProjectStore = defineStore('project', () => {
     }
   });
 
-  const setOnlyFavorites = (value: boolean) => {
-    onlyFavorites.value = value;
-  };
-
-  // Total de projetos
   const totalProjects = computed(() => projects.value.length);
 
   const hasProjects = computed(() => !!totalProjects.value);
 
-  // Barra de busca
   const searchResults = computed(() => {
     if (searchQuery.value.length < 3) return [];
     const query = searchQuery.value.toLowerCase();
@@ -94,20 +46,49 @@ export const useProjectStore = defineStore('project', () => {
     );
   });
 
-  // Adiciona uma nova busca ao histórico
+  const addProject = (project: Project) => {
+    projects.value.push(project);
+  };
+
+  const getProjectById = (id: string) => {
+    return projects.value.find(project => project.id === id);
+  };
+
+  const removeProject = (id: string) => {
+    projects.value = projects.value.filter(project => project.id !== id);
+  };
+
+  const editProject = (id: string, updatedProject: Project) => {
+    const index = projects.value.findIndex(project => project.id === id);
+    if (index !== -1) {
+      projects.value[index] = updatedProject;
+    }
+  };
+
+  const toggleFavorite = (id: string) => {
+    const project = projects.value.find(project => project.id === id);
+    if (project) {
+      project.isFavorite = !project.isFavorite;
+    }
+  };
+
+  const setSortOption = (option: 'alphabetical' | 'newest' | 'endingSoon') => {
+    sortOption.value = option;
+  }
+
+  const setOnlyFavorites = (value: boolean) => {
+    onlyFavorites.value = value;
+  };
+
+  const projectExistsOnList = (id: string) => {
+    return !!projects.value.find(project => project.id === id)
+  }  
+
   const addSearchHistory = (query: string) => {
     if (recentSearches.value.length >= 5) {
       recentSearches.value.shift();
     }
     recentSearches.value.push(query);
-  };
-
-  // Destaca o texto que corresponde à busca
-  const highlightText = (text: string) => {
-    const query = searchQuery.value.toLowerCase();
-    if (query.length < 3) return text;
-    const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
   };
 
   return {
@@ -116,14 +97,13 @@ export const useProjectStore = defineStore('project', () => {
     removeProject,
     editProject,
     toggleFavorite,
-    projectList, // Adiciona a computada projectList
+    projectList,
     totalProjects,
     hasProjects,
     searchQuery,
     searchResults,
     recentSearches,
     addSearchHistory,
-    highlightText,
     sortOption,
     onlyFavorites,
     setOnlyFavorites,
