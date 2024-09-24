@@ -8,7 +8,8 @@ Esta aplicação é um gerenciador de projetos que permite realizar operações 
 - **Bootstrap**: Escolhido como framework para desenvolver a interface, devido à sua simplicidade na criação de componentes e fácil customização. O Sass foi utilizado para personalizar o estilo dos componentes.
 - **Docker**: Utilizado para facilitar a execução do ambiente de desenvolvimento.
 - **Vue Test Utils e Vitest**: Ferramentas utilizadas para realizar testes nos componentes Vue e na store do Pinia.
-- **Github Actions**: Utilizado para realizar o deploy da aplicação, que se encontra [nesse endereço](https://candido-luiz.github.io/clicksign-vue3/)
+- **formkit/auto-animate**: Biblioteca utilizada como plugin para criar uma diretiva de facilitação de animação das transições em tela.
+- **Github Actions**: Utilizado para realizar o deploy da aplicação, que se encontra [nesse endereço](https://candido-luiz.github.io/clicksign-vue3/).
 
 ## Configuração do Projeto
 
