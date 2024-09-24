@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  vue-clicksign:
+    container_name: vue-clicksign
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    ports:
+      - 5173:5173
