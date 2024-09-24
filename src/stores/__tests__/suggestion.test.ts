@@ -44,7 +44,6 @@ describe('Suggestion Store', () => {
     store.removeSuggestion(0);
 
     expect(store.suggestionList).toHaveLength(1);
-    console.log(store.suggestionList)
     expect(store.suggestionList[0]).toBe('Sugestão 1');
   });
 
