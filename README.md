@@ -3,11 +3,12 @@
 Esta aplicação é um gerenciador de projetos que permite realizar operações de CRUD (Criar, Ler, Atualizar e Deletar) de forma simples e eficiente. O desenvolvimento foi realizado utilizando as seguintes tecnologias:
 
 - **Vue 3 com Vite e TypeScript**: Para criar uma interface interativa e responsiva.
-- **Pinia**: Utilizado para gerenciar estados na aplicação, junto com um plugin do Pinia que armazena os dados no `localStorage`.
+- **Pinia**: Utilizado para gerenciar estados na aplicação, junto com um plugin também criado com o pinia que armazena os dados no `localStorage`.
 - **Vue Router**: Para gerenciar o roteamento entre as diferentes páginas da aplicação.
 - **Bootstrap**: Escolhido como framework para desenvolver a interface, devido à sua simplicidade na criação de componentes e fácil customização. O Sass foi utilizado para personalizar o estilo dos componentes.
 - **Docker**: Utilizado para facilitar a execução do ambiente de desenvolvimento.
 - **Vue Test Utils e Vitest**: Ferramentas utilizadas para realizar testes nos componentes Vue e na store do Pinia.
+- **Github Actions**: Utilizado para realizar o deploy da aplicação, que se encontra [nesse endereço](https://candido-luiz.github.io/clicksign-vue3/)
 
 ## Configuração do Projeto
 
