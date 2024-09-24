@@ -229,7 +229,7 @@ watch(isEditProjectView, value => {
       </header>
 
       
-       <div class="border rounded-2 py-5">
+       <div class="border rounded-2 py-md-5">
          <form id="projectForm" @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
            <div class="mb-3">
              <label for="projectName" class="form-label">Nome do projeto (Obrigatório)</label>
