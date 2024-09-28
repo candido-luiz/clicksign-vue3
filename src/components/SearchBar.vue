@@ -115,7 +115,7 @@ onBeforeUnmount(() => {
   margin-top: 0 !important;
 
   &:focus-within > *{
-    border-bottom: 1px solid $clicksign-button-primary-color;
+    border-bottom: 1px solid $clicksign-primary-color;
   }
 
   & input::placeholder {

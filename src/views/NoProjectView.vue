@@ -43,15 +43,11 @@ import { useRouter } from 'vue-router';
   & > * {
     margin: 0;
   }
-}
-h1 {
-  color: $clicksign-emphasis-text-color;
-  size: 24px;
-  margin-bottom: 24px;
-}
 
-p {
-  color: $clicksign-text-color;
+  h1 {
+    color: $clicksign-emphasis-text-color;
+    font-size: 24px;
+  }
 }
 
 @media (width >= 600px) {

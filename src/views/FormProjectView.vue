@@ -150,7 +150,12 @@ const handleFileChange = (event: Event) => {
 };
 
 const convertAndSetFile = async (file: File) => {
+  const acceptedFileTypes = ['png', 'jpg', 'jpeg'];
   if (file) {
+    const fileType = file.type.split('/')[1];
+    if(!acceptedFileTypes.includes(fileType)) {
+      return
+    }
     try {
       const base64 = await fileToBase64(file);
       projectCoverUlr.value = base64;
@@ -160,6 +165,11 @@ const convertAndSetFile = async (file: File) => {
     }
   }
 };
+
+const removeCoverImage = () => {
+  projectCoverUlr.value = '';
+  projectCoverName.value = '';
+}
 
 const generateProjectInstance = (id?: string) => {
   return new Project(
@@ -211,10 +221,10 @@ watch(isEditProjectView, value => {
 </script>
 
 <template>
-  <div class="container d-flex justify-content-center full-height">
+  <div class="container-fluid d-flex justify-content-center px-4 full-height">
     <div class="d-flex flex-column w-100">
       
-      <header class="mb-4">
+      <header class="mb-4 mt-5">
         <div class="d-flex flex-column align-items-start">
           <button
             @click="goToProjectList"
@@ -229,10 +239,10 @@ watch(isEditProjectView, value => {
       </header>
 
       
-       <div class="border rounded-2 py-md-5">
-         <form id="projectForm" @submit.prevent="submitForm" class="col-md-8 col-lg-6 mx-auto bg-white p-4 rounded">
-           <div class="mb-3">
-             <label for="projectName" class="form-label">Nome do projeto (Obrigatório)</label>
+       <div class="form-border py-4 py-sm-5">
+         <form id="projectForm" @submit.prevent="submitForm" class="col-10 col-md-8 col-lg-6 mx-auto">
+           <div class="mb-3 mb-md-4">
+             <label for="projectName" :class="['form-label', {'invalid-field' : errors.projectName}]">Nome do projeto <span>(Obrigatório)</span></label>
              <input
                type="text"
                id="projectName"
@@ -246,8 +256,8 @@ watch(isEditProjectView, value => {
               </div>
            </div>
    
-           <div class="mb-3">
-             <label for="projectCustomer" class="form-label">Cliente (Obrigatório)</label>
+           <div class="mb-3 mb-md-4">
+             <label for="projectCustomer" :class="['form-label', {'invalid-field' : errors.customer}]">Cliente <span>(Obrigatório)</span></label>
              <input
                type="text"
                id="projectCustomer"
@@ -261,9 +271,9 @@ watch(isEditProjectView, value => {
               </div>
            </div>
    
-           <div class="row mb-3">
-             <div class="col">
-               <label for="projectStartDate" class="form-label">Data de Início (Obrigatório)</label>
+           <div class="row mb-3 mb-md-4">
+             <div class="col-12 col-sm-6  mb-3 mb-sm-0">
+               <label for="projectStartDate" :class="['form-label', {'invalid-field' : errors.startDate}]">Data de Início <span>(Obrigatório)</span></label>
                <input
                  type="date"
                  id="projectStartDate"
@@ -276,8 +286,8 @@ watch(isEditProjectView, value => {
                 {{ errors.startDate }}
               </div>
              </div>
-             <div class="col">
-               <label for="projectFinalDate" class="form-label">Data final (Obrigatório)</label>
+             <div class="col-12 col-sm-6">
+               <label for="projectFinalDate" :class="['form-label', {'invalid-field' : errors.finalDate}]">Data final <span>(Obrigatório)</span></label>
                <input
                  type="date"
                  id="projectFinalDate"
@@ -292,38 +302,59 @@ watch(isEditProjectView, value => {
              </div>
            </div>
     
-           <div class=" mb-3">
+           <div class="mb-3 mb-md-4">
             <label for="projectCover" class="form-label">Capa do projeto</label>
             <div
+              v-if="!projectCoverName"
               class="dropzone d-flex justify-content-center align-items-center"
               @click="triggerFileInput"
               @dragover.prevent
               @drop.prevent="handleDrop"
             >
-              <div v-if="!projectCoverName" class="d-flex flex-column">
-                <i class="bi bi-upload"></i>
-                <span>Adicione uma imagem</span>
+              <div class="d-flex flex-column  align-items-center gap-3">
+                <i class="bi bi-upload text-primary"></i>
+                <span>Escolha uma imagem .jpg ou .png no seu dispositivo</span>
+                <button
+                  class="btn btn-selectCover px-4"
+                  type="button"
+                >
+                  <span class="fs-5">Selecionar</span>
+                </button>
               </div>
-              <div v-else class="text-primary">
-                <span>{{ projectCoverName }}</span>
+
+              <input
+                ref="fileInput"
+                type="file"
+                id="projectCover"
+                accept=".png, .jpg, .jpeg"
+                @change="handleFileChange"
+                class="form-control d-none"
+              />
+            </div>
+            <div 
+              v-else-if="projectCoverUlr"
+              class="d-flex justify-content-center"
+            >
+              <div class="position-relative">
+                <img :src="projectCoverUlr" class="img-fluid cover" alt="capa do projeto">
+                <button 
+                  class="delete-coverImage btn bg-white rounded-circle shadow-sm " 
+                  type="button" 
+                  id="dropdownMenuButton"
+                  aria-expanded="false"
+                  @click="removeCoverImage"
+                >
+                  <i class="bi bi-trash text-primary"></i>
+                </button>
               </div>
             </div>
-            
-            <input
-              ref="fileInput"
-              type="file"
-              id="projectCover"
-              accept="image/*"
-              @change="handleFileChange"
-              class="form-control d-none"
-            />
           </div>
    
           <button
             v-if="!isEditProjectView"
             id="createProject"
             type="submit"
-            class="btn btn-primary w-100"
+            class="btn btn-primary w-100 fs-5"
             :disabled="disabledSaveButton"
           >
             Salvar projeto
@@ -332,7 +363,7 @@ watch(isEditProjectView, value => {
             v-else 
             id="editProject"
             type="submit"
-            class="btn btn-primary w-100"
+            class="btn btn-primary w-100 fs-5"
             :disabled="disabledSaveButton"
            >
              Editar projeto
@@ -344,18 +375,94 @@ watch(isEditProjectView, value => {
 </template>
 
 <style scoped lang="scss">
+.form-border {
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+}
 .full-height {
   height: calc(100vh - $clicksign-page-header-height);
 }
 
+header {
+  h1 {
+    color: $clicksign-emphasis-text-color;
+    font-size: 24px;
+  }
+}
+
+#projectForm {
+  label {
+    font-size: 18px;
+    
+    &:is(.invalid-field) {
+      color: var(--bs-danger);
+    }
+
+    &:not(.invalid-field) {
+      color: $clicksign-primary-color;
+      span {
+        color: $clicksign-normal-text-color;
+      }
+    }
+
+    span {
+      font-size: 14px;
+    }
+
+  }
+}
+
 .dropzone {
-  height: 150px;
+  min-height: 150px;
   width: 100%;
-  border: 2px dashed #ccc;
+  padding: 12px;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
   cursor: pointer;
   text-align: center;
 }
 .dropzone:hover {
-  border-color: $clicksign-button-primary-color;
+  border-color: $clicksign-primary-color;
+}
+img.cover {
+  max-height: 395px;
+  border-radius: 6px;
+}
+.delete-coverImage {
+  width: 36px;
+  height: 36px; 
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  padding: 0; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+.btn-selectCover {
+  background-color: white;
+  color: $clicksign-primary-color;
+  border: 1px solid currentColor;
+
+  &:hover {
+    background-color: rgba($clicksign-primary-color, 0.6);
+    color: white;
+  }
+}
+
+#projectForm input {
+  &:-webkit-autofill {
+      background-color: white !important;
+      transition: background-color 5000s ease-in-out 0s;
+  }
+  
+  &:-moz-autofill {
+      background-color: white !important;
+  }
+  
+  &:-ms-autofill {
+      background-color: white !important;
+  }
+  
 }
 </style>
