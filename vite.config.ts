@@ -1,10 +1,11 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { ConfigEnv, defineConfig  } from 'vite'
+import { defineConfig  } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
-export default defineConfig(({ mode }: ConfigEnv) => {
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => {
   return {
     base: mode === 'development' ? "/" : "/clicksign-vue3/",
     plugins: [
