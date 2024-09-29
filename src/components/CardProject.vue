@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Project } from '@/models/Project'; // Importe o modelo Project
+import { Project } from '@/models/Project';
 import defaultCoverImage from '@/assets/images/default-card-background.png';
 import { useProjectStore } from '@/stores/project';
 import { useRouter } from 'vue-router';
@@ -93,22 +93,25 @@ const removeProject = (projectId: string) => {
     </div>
 
     <div class="card-body">
-      <h5 class="card-title" v-html="projectName"></h5>
+      <h1 class="card-title fs-5 fw-bold" v-html="projectName"></h1>
 
-      <p class="card-text">Cliente: {{ project.customer }}</p>
+      <p class="card-text">
+        <span class="fw-bold">Cliente: </span>
+        <span>{{ project.customer }}</span>
+      </p>
 
       <hr />
 
       <div class="d-flex flex-column gap-2">
-        <div class="d-flex gap-2" title="Data de início">
+        <div class="d-flex gap-3 align-items-center" title="Data de início">
           <span>
-            <i class="bi bi-calendar"></i>
+            <i class="bi bi-calendar" style="font-size: 24px;"></i>
           </span>
           <span>{{ formatDate(project.startDate) }}</span>
         </div>
-         <div class="d-flex gap-2" title="Data final">
+         <div class="d-flex gap-3 align-items-center" title="Data final">
           <span>
-            <i class="bi bi-calendar-check"></i>
+            <i class="bi bi-calendar-check" style="font-size: 24px;"></i>
           </span>
           <span>{{ formatDate(project.finalDate) }}</span>
         </div>
