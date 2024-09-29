@@ -40,7 +40,7 @@ const setShowSearchBar = inject(setShowSearchBarKey);
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 
   .page-title {
     width: min-content;
