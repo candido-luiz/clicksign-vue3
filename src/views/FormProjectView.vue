@@ -233,7 +233,7 @@ watch(isEditProjectView, value => {
             <i class="bi bi-arrow-left me-2"></i> 
             <span>Voltar</span>
           </button>
-          <h1 v-if="!isEditProjectView" class="fs-4 m-0">Novo projeto</h1>
+          <h1 v-if="!isEditProjectView" class="fs-4 fw-semibold m-0">Novo projeto</h1>
           <h1 v-else class="fs-4 m-0">Editar projeto</h1>
         </div>
       </header>

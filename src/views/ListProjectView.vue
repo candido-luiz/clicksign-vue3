@@ -22,7 +22,7 @@ const projectList = ref<Project[]>([]);
 const showModal = ref<boolean>(false);
 const projectIdToRemove = ref<string | null>(null);
 const query = ref<string>('');
-const searcherdQuery = ref<string>('');
+const searchedQuery = ref<string>('');
 
 
 const onlyFavorites = computed(() => {
@@ -38,9 +38,9 @@ const allProjects = computed(() => {
 })
 
 const filteredProjectList = computed(() => {
-  if(searcherdQuery.value) {
+  if(searchedQuery.value) {
     return projectList.value.filter(project => {
-      return project.name.toLowerCase().includes(searcherdQuery.value.toLowerCase());
+      return project.name.toLowerCase().includes(searchedQuery.value.toLowerCase());
     })
   }
 
@@ -54,7 +54,7 @@ const suggestionList = computed(() => {
 const resetFilters = () => {
   projectStore.setOnlyFavorites(false);
   query.value = "";
-  searcherdQuery.value = "";
+  searchedQuery.value = "";
 }
 
 const removeProject = (projectId: string) => {
@@ -81,13 +81,24 @@ const cancelRemoval = () => {
 
 const searchProjects = (query: string) => {
   suggestionStore.addSuggestion(query);
-  setShowSearchBar(false);
-  searcherdQuery.value = query;
+  searchedQuery.value = query;
+}
+
+const removeFocusFromSearchBar = () => {
+  const listView = document.querySelector("#list-view") as HTMLElement || undefined;
+  listView?.focus();
+}
+
+const closeSearchBar = () => {
+  removeFocusFromSearchBar();
+  if(!searchedQuery.value) {
+    setShowSearchBar(false);
+  }
 }
 
 const cancelSearch = () => {
   setShowSearchBar(false);
-  searcherdQuery.value = "";
+  searchedQuery.value = "";
   query.value = "";
 }
 
@@ -102,17 +113,30 @@ watch([onlyFavorites, sortOption], () => {
 </script>
 
 <template>
-  <div>
+  <div id="list-view" tabindex="-1">
     <SearchBar 
       v-if="showSearchBar"
       :suggestions="suggestionList"
       v-model="query"
       @search="searchProjects"
       @removeSuggestion="removeSuggestion"
-      @cancel="cancelSearch"
+      @close="closeSearchBar"
     />
 
-    <HeaderProject />
+    <HeaderProject v-if="!searchedQuery" />
+
+    <header v-else-if="filteredProjectList.length" class="search-results-header pt-4 px-4">
+      <div class="d-flex flex-column align-items-start">
+        <button
+          @click="cancelSearch"
+          class="ps-0 btn btn-link text-decoration-none d-flex align-items-center"
+        >
+          <i class="bi bi-arrow-left me-2"></i> 
+          <span>Voltar</span>
+        </button>
+        <h1 class="fs-4 m-0">Resultado da busca</h1>
+      </div>
+    </header>
 
     <main v-if="filteredProjectList.length" class="p-4">
       <div v-auto-animate class="card-grid">
@@ -161,11 +185,19 @@ watch([onlyFavorites, sortOption], () => {
 </template>
 
 <style scoped lang="scss">
-
+#list-view {
+  &:focus {
+    outline: none;
+  }
+}
+.search-results-header {
+  h1 {
+    color: $clicksign-emphasis-text-color;
+  }
+}
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, auto));
-  justify-items: center;
   align-items: center;
   gap: 30px;
 }

@@ -3,7 +3,7 @@
     <div class="col-12 px-0">
       <div ref="searchBox" class="searchbox input-group">
         <span class="input-group-text" id="basic-addon1">
-          <i class="bi bi-search"></i>
+          <i class="bi bi-search text-primary"></i>
         </span>
         <input 
           id="searchInput"
@@ -12,9 +12,10 @@
           type="text" 
           placeholder="Digite o nome do projeto..."
           v-model="searchQuery"
-          @change="emitSearch"
+          @keypress.enter="emitSearch"
+          @focus="showHistory = true"
         >
-        <div v-auto-animate class="history-list list-group">
+        <div v-show="showHistory" v-auto-animate class="history-list list-group">
           <li 
             class="list-group-item d-flex justify-content-between align-items-center"
             v-for="(item, index) in filteredSuggestionList"
@@ -46,10 +47,12 @@ const props = defineProps<{
 const searchBox = ref<HTMLElement>();
 const searchInput = ref<HTMLElement>();
 const searchQuery = defineModel<string>({required: true});
+const showHistory = ref<boolean>(false);
+
 const emit = defineEmits<{
   (e: 'search', query: string): void;
   (e: 'removeSuggestion', suggestionIndex: number): void;
-  (e: 'cancel'): void;
+  (e: 'close'): void;
 
 }>();
 
@@ -65,7 +68,13 @@ const filteredSuggestionList = computed(() => {
 const emitSearch = () => {
   if(!searchQuery.value.trim()) return
   emit('search', searchQuery.value);
+  showHistory.value = false;
 };
+
+const closeSearchBar = () => {
+  showHistory.value = false;
+  emit("close");
+}
 
 const removeSuggestion = (index: number) => {
   emit('removeSuggestion', index)
@@ -80,14 +89,14 @@ const searchByHistoryItem = (item: string) => {
 
 const handleKeyUp = (event: KeyboardEvent) => {
   if (event.key === "Escape") {
-    emit("cancel");
+    closeSearchBar();
   }
 }
 
 const handleClickOutside = (event: Event) => {
   const searchboxElement = searchBox.value;
   if (searchboxElement && !searchboxElement.contains(event.target as Node)) {
-    emit("cancel"); 
+    closeSearchBar(); 
   }
 }
 
@@ -113,6 +122,8 @@ onBeforeUnmount(() => {
 .searchbox {
   position: relative;
   margin-top: 0 !important;
+  box-shadow: 0px 4px 4px 0 rgba($clicksign-primary-color, 0.25);
+  margin-bottom: 9px;
 
   &:focus-within > *{
     border-bottom: 1px solid $clicksign-primary-color;
@@ -175,9 +186,5 @@ onBeforeUnmount(() => {
 
 .btn-outline-secondary {
   border-color: #ccc;
-}
-
-.btn-outline-secondary .bi-search {
-  font-size: 20px;
 }
 </style>

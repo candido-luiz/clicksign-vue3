@@ -34,12 +34,13 @@ const setShowSearchBar = inject(setShowSearchBarKey);
 .topbar {
   height: 80px;
   background: $clicksign-topbar-background;
-  box-shadow: 0px 4px 4px 0 #00000040;
+  box-shadow: 0px 4px 4px 0 rgba($clicksign-primary-color, 0.25);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
+  margin-bottom: 9px;
 
   .page-title {
     width: min-content;

@@ -32,12 +32,12 @@ const createNewProject = () => {
 </script>
 
 <template>
-  <header class="sticky-header p-4 d-flex justify-content-between align-items-center">
-    <div class="d-flex align-items-center gap-1">
-      <h1 class="fs-4 m-0" style="font-size: 24px; font-weight: 600;">
+  <header class="sticky-header px-4 pt-4 d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center gap-2">
+      <h1 class="fs-4 fw-semibold m-0">
         Projetos 
       </h1>
-      <span class="fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
+      <span class="projet-count fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
     </div>
 
     <div class="mobile-header-options gap-3">
@@ -69,7 +69,7 @@ const createNewProject = () => {
       <button 
         id="createProject"
         @click="createNewProject" 
-        class="btn btn-primary d-flex align-items-center flex-shrink-0"
+        class="btn btn-primary d-flex align-items-center flex-shrink-0 px-3"
       >
         <i class="bi bi-plus-circle"></i>
         <span class="ms-2">Novo</span>
@@ -92,9 +92,9 @@ const createNewProject = () => {
       <button 
         id="createProjectDesktop"
         @click="createNewProject" 
-        class="btn btn-primary d-flex align-items-center flex-shrink-0"
+        class="btn btn-primary d-flex align-items-center flex-shrink-0 px-4"
       >
-        <i class="bi bi-plus-circle" style="font-size: 24px; color: white;"></i>
+        <i class="bi bi-plus-circle" style="font-size: 20px; color: white;"></i>
         <span class="ms-2">Novo projeto</span>
       </button>
     </div>
@@ -107,6 +107,33 @@ const createNewProject = () => {
   top: 0;
   z-index: 1;
   background-color: $clicksign-background;
+
+  h1 {
+    color: $clicksign-emphasis-text-color;
+  }
+
+  .projet-count {
+    color: $clicksign-primary-color;
+  }
+}
+.form-switch {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  .form-check-input {
+    width: 40px;
+    height: 20px;
+    margin-bottom: 5px;
+  }
+  .form-check-label{
+    font-size: 16px;
+    color: #1e1e1e !important;
+  }
+
+}
+.form-select {
+  color: $clicksign-topbar-background;
+
 }
 .mobile-header-options {
   display: flex;
