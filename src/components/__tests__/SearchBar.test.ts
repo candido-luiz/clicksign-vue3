@@ -23,10 +23,10 @@ describe('SearchBar', () => {
     it('Usuario digitou algo na busca e apertou enter', async () => {
       const searchInput = wrapper.find('#searchInput');
       await searchInput.setValue('Projeto 01');
+      await searchInput.trigger('keypress.enter')
 
       expect(wrapper.emitted().search[0]).toEqual(['Projeto 01']);
 
-      //Usuario agora apagou o input e apertou enter
       await searchInput.setValue('');
       expect(wrapper.emitted().search.length).toEqual(1);
     });
@@ -34,7 +34,7 @@ describe('SearchBar', () => {
     it('Verifica se a lista do historico é renderizada corretamente', async () => {
       const searchInput = wrapper.find('#searchInput');
       await searchInput.setValue('Proje');
-
+      await searchInput.trigger('focus')
       const listItems = wrapper.findAll('.list-group li')
       expect(listItems.length).toBe(2);
       expect(listItems[0].text()).toEqual('Projeto 01');
@@ -43,20 +43,19 @@ describe('SearchBar', () => {
 
     it('Verifica se ao clicar no item do historico, a acao de busca por historico e chamada', async () => {
       const searchInput = wrapper.find('#searchInput');
-      await searchInput.setValue('Proje');
-
+      await searchInput.trigger('focus')
       const listItems = wrapper.findAll('.list-group li')
       const firstItem = listItems[0];
       await firstItem.trigger('click');
       await wrapper.vm.$nextTick();
       expect(wrapper.vm.searchQuery).toEqual(firstItem.text());
-      expect(wrapper.emitted().search.length).toEqual(2);
-      expect(wrapper.emitted().search[0]).toEqual(['Proje'])
-      expect(wrapper.emitted().search[1]).toEqual(['Projeto 01'])
+      expect(wrapper.emitted().search.length).toEqual(1);
+      expect(wrapper.emitted().search[0]).toEqual(['Projeto 01'])
     });
 
     it('Verifica se ao clicar no botao de remover item do historico, a acao de remocao e chamada', async () => {
-
+      const searchInput = wrapper.find('#searchInput');
+      await searchInput.trigger('focus');
       const listItems = wrapper.findAll('.list-group li')
       const firstItem = listItems[0];
       const removeButton = firstItem.find('#removeFromHistory');
@@ -71,7 +70,7 @@ describe('SearchBar', () => {
       document.dispatchEvent(event);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.emitted().cancel).toBeTruthy();
+      expect(wrapper.emitted().close).toBeTruthy();
     });
 
     it('Verifica se o evento cancel e emitido ao clicar em uma tecla diferente de Esc', async () => {
@@ -79,7 +78,7 @@ describe('SearchBar', () => {
       document.dispatchEvent(event);
       await wrapper.vm.$nextTick();
 
-      expect(wrapper.emitted().cancel).toBeFalsy();
+      expect(wrapper.emitted().close).toBeFalsy();
     });
   })
 })

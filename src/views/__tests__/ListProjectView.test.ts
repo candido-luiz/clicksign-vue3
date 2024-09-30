@@ -121,7 +121,6 @@ describe('ListProjectView', () => {
       const wrapper = shallowMountComponent();
       wrapper.vm.searchProjects('Proje');
       expect(wrapper.vm.suggestionStore.addSuggestion).toHaveBeenCalledWith('Proje');
-      expect(wrapper.vm.setShowSearchBar).toHaveBeenCalledWith(false);
       expect(wrapper.vm.searchedQuery).toBe('Proje');
     });
     it('Teste emit @removeSuggestion do SearchBar', async () => {
