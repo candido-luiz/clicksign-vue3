@@ -81,13 +81,13 @@ const removeProject = (projectId: string) => {
             <i class="bi bi-three-dots"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-            <li class="d-flex gap-3 align-items-center">
+            <li class="d-flex gap-3 align-items-center" @click="editProject(project.id)">
               <i class="bi bi-pencil-square" style="font-size: 20px;"></i>
-              <span role="button" id="editProject" class="dropdown-item" @click="editProject(project.id)">Editar</span>
+              <span role="button" id="editProject" class="dropdown-item">Editar</span>
             </li>
-            <li class="d-flex gap-3 align-items-center">
+            <li class="d-flex gap-3 align-items-center" @click="removeProject(project.id)">
               <i class="bi bi-trash" style="font-size: 20px;"></i>
-              <span role="button" id="removeProject" class="dropdown-item"@click="removeProject(project.id)">Remover</span>
+              <span role="button" id="removeProject" class="dropdown-item">Remover</span>
             </li>
           </ul>
         </div>
