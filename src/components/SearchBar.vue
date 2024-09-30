@@ -17,6 +17,7 @@
             :class="{'rounded-searchbar': isSearchBarRounded}"
             type="text" 
             placeholder="Digite o nome do projeto..."
+            autocomplete="off"
             v-model="searchQuery"
             @keypress.enter="emitSearch"
             @focus="showHistory = true"
@@ -181,8 +182,8 @@ onBeforeUnmount(() => {
   color: #717171;
 
   &:hover {
-    background-color: #d2ccfd;
-    color: black;
+    background-color: $clicksign-primary-color;
+    color: #FFFFFF;
   }
 }
 

@@ -61,13 +61,9 @@ const removeProject = (projectId: string) => {
       <img :src="cardCoverImage" alt="Project Cover" class="card-img-top" height="230" />
 
       <i
+        class="favorite-icon"
         :class="[isFavorite ? 'bi bi-star-fill' : 'bi bi-star']"
-        class="position-absolute"
-        :style="{ 
-          bottom: '17px', 
-          right: '74px', 
-          fontSize: '1.5rem', 
-          cursor: 'pointer',
+        :style="{
           color: isFavorite ? '#FFB23D' : 'white' 
         }"
         @click="toggleFavorite(project.id)"
@@ -84,9 +80,15 @@ const removeProject = (projectId: string) => {
           >
             <i class="bi bi-three-dots"></i>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><span role="button" id="editProject" class="dropdown-item" @click="editProject(project.id)">Editar</span></li>
-            <li><span role="button" id="removeProject" class="dropdown-item text-danger"@click="removeProject(project.id)">Remover</span></li>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li class="d-flex gap-3 align-items-center">
+              <i class="bi bi-pencil-square" style="font-size: 20px;"></i>
+              <span role="button" id="editProject" class="dropdown-item" @click="editProject(project.id)">Editar</span>
+            </li>
+            <li class="d-flex gap-3 align-items-center">
+              <i class="bi bi-trash" style="font-size: 20px;"></i>
+              <span role="button" id="removeProject" class="dropdown-item"@click="removeProject(project.id)">Remover</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -120,7 +122,7 @@ const removeProject = (projectId: string) => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .card-options {
   width: 36px;
   height: 36px; 
@@ -129,9 +131,47 @@ const removeProject = (projectId: string) => {
   align-items: center; 
   justify-content: center;
 }
+
 mark{
   padding: 0;
   margin: 0;
   background-color: #ffb23d;
 }
+
+.favorite-icon {
+  position: absolute;
+  font-size: 1.5rem;
+  bottom: 17px;
+  right: 74px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  min-width: 240px;
+  padding: 0;
+  li {
+    padding: 10px 0 10px 20px;
+    color: $clicksign-primary-color;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $clicksign-primary-color;
+      color: #FFFFFF;
+    }
+  }
+
+  & > li:first-child {
+    border-bottom: 1px solid $clicksign-background;
+  }
+
+  & .dropdown-item {
+    color: inherit;
+    padding: 0;
+
+    &:hover {
+      background-color: unset;
+    }
+  }
+}
+
 </style>
