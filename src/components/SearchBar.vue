@@ -1,20 +1,29 @@
 <template>
   <div class="row mx-0">
-    <div class="col-12 px-0">
-      <div ref="searchBox" class="searchbox input-group">
-        <span class="input-group-text" id="basic-addon1">
-          <i class="bi bi-search"></i>
-        </span>
-        <input 
-          id="searchInput"
-          ref="searchInput"
-          class="form-control searchbar" 
-          type="text" 
-          placeholder="Digite o nome do projeto..."
-          v-model="searchQuery"
-          @change="emitSearch"
-        >
-        <div v-auto-animate class="history-list list-group">
+    <div class="col-12 px-0 position-relative" style="margin-bottom: 90px;">
+      <div 
+        ref="searchBox" 
+        class="searchbox"
+        :class="{'rounded-searchbox': isSearchBarRounded}"
+      >
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1">
+            <i class="bi bi-search text-primary"></i>
+          </span>
+          <input 
+            id="searchInput"
+            ref="searchInput"
+            class="form-control searchbar" 
+            :class="{'rounded-searchbar': isSearchBarRounded}"
+            type="text" 
+            placeholder="Digite o nome do projeto..."
+            autocomplete="off"
+            v-model="searchQuery"
+            @keypress.enter="emitSearch"
+            @focus="showHistory = true"
+          >
+        </div>
+        <div v-if="showHistory" v-auto-animate class="history-list list-group">
           <li 
             class="list-group-item d-flex justify-content-between align-items-center"
             v-for="(item, index) in filteredSuggestionList"
@@ -26,7 +35,7 @@
               <span>{{ item }}</span>
             </div>
             <div id="removeFromHistory" @click.stop="removeSuggestion(index)" class="remove-icon">
-              <i class="bi bi-x "></i>
+              <i class="bi bi-x " style="font-size: 24px;"></i>
             </div>
             
           </li>
@@ -46,10 +55,12 @@ const props = defineProps<{
 const searchBox = ref<HTMLElement>();
 const searchInput = ref<HTMLElement>();
 const searchQuery = defineModel<string>({required: true});
+const showHistory = ref<boolean>(false);
+
 const emit = defineEmits<{
   (e: 'search', query: string): void;
   (e: 'removeSuggestion', suggestionIndex: number): void;
-  (e: 'cancel'): void;
+  (e: 'close'): void;
 
 }>();
 
@@ -60,12 +71,22 @@ const filteredSuggestionList = computed(() => {
     })
   }
   return props.suggestions;
+});
+
+const isSearchBarRounded = computed(() => {
+  return filteredSuggestionList.value.length > 0 && showHistory.value;
 })
 
 const emitSearch = () => {
   if(!searchQuery.value.trim()) return
   emit('search', searchQuery.value);
+  showHistory.value = false;
 };
+
+const closeSearchBar = () => {
+  showHistory.value = false;
+  emit("close");
+}
 
 const removeSuggestion = (index: number) => {
   emit('removeSuggestion', index)
@@ -80,14 +101,14 @@ const searchByHistoryItem = (item: string) => {
 
 const handleKeyUp = (event: KeyboardEvent) => {
   if (event.key === "Escape") {
-    emit("cancel");
+    closeSearchBar();
   }
 }
 
 const handleClickOutside = (event: Event) => {
   const searchboxElement = searchBox.value;
   if (searchboxElement && !searchboxElement.contains(event.target as Node)) {
-    emit("cancel"); 
+    closeSearchBar(); 
   }
 }
 
@@ -111,24 +132,35 @@ onBeforeUnmount(() => {
 
 <style scoped lang="scss">
 .searchbox {
-  position: relative;
-  margin-top: 0 !important;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  left: 0;
+  z-index: 10;
 
-  &:focus-within > *{
-    border-bottom: 1px solid $clicksign-button-primary-color;
+  &.rounded-searchbox {
+    border: 2px solid $clicksign-primary-color;
+    border-radius: 18px;
   }
 
   & input::placeholder {
     font-size: 18px;
   }
 }
-.input-group > input {
-  border-left: 0;
+.input-group {
+  box-shadow: 0px 4px 4px 0 rgba($clicksign-primary-color, 0.25);
+  margin-top: 0 !important;
+  & > input {
+    border: 0;
+  }
 }
 .input-group-text {
   background-color: white;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  border-color: transparent;
+  border-bottom-left-radius: 16px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 0;
 }
 
 .searchbar {
@@ -138,13 +170,11 @@ onBeforeUnmount(() => {
   &:focus {
     box-shadow: none !important;
   }
-}
-.history-list {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  left: 0;
-  z-index: 10;
+
+  &.rounded-searchbar {
+    border-top-right-radius: 16px;
+  }
+
 }
 
 .history-list li {
@@ -152,8 +182,19 @@ onBeforeUnmount(() => {
   color: #717171;
 
   &:hover {
-    background-color: #d2ccfd;
-    color: black;
+    background-color: $clicksign-primary-color;
+    color: #FFFFFF;
+  }
+}
+
+.list-group-item {
+  &:first-child{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+  &:last-child {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
   }
 }
 
@@ -169,15 +210,7 @@ onBeforeUnmount(() => {
   }
 }
 
-.input-group {
-  margin-top: 20px;
-}
-
 .btn-outline-secondary {
   border-color: #ccc;
-}
-
-.btn-outline-secondary .bi-search {
-  font-size: 20px;
 }
 </style>

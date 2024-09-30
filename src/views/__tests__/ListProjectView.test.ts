@@ -111,7 +111,7 @@ describe('ListProjectView', () => {
       await itemsNotFound.find('button').trigger('click');
       expect(wrapper.vm.projectStore.setOnlyFavorites).toHaveBeenCalledWith(false);
       expect(wrapper.vm.query).toEqual('')
-      expect(wrapper.vm.searcherdQuery).toEqual('')
+      expect(wrapper.vm.searchedQuery).toEqual('')
 
     })
   });
@@ -121,8 +121,7 @@ describe('ListProjectView', () => {
       const wrapper = shallowMountComponent();
       wrapper.vm.searchProjects('Proje');
       expect(wrapper.vm.suggestionStore.addSuggestion).toHaveBeenCalledWith('Proje');
-      expect(wrapper.vm.setShowSearchBar).toHaveBeenCalledWith(false);
-      expect(wrapper.vm.searcherdQuery).toBe('Proje');
+      expect(wrapper.vm.searchedQuery).toBe('Proje');
     });
     it('Teste emit @removeSuggestion do SearchBar', async () => {
       const wrapper = shallowMountComponent();
@@ -133,7 +132,7 @@ describe('ListProjectView', () => {
       const wrapper = shallowMountComponent();
       wrapper.vm.cancelSearch();
       expect(wrapper.vm.setShowSearchBar).toHaveBeenCalledWith(false);
-      expect(wrapper.vm.searcherdQuery).toBe('');
+      expect(wrapper.vm.searchedQuery).toBe('');
       expect(wrapper.vm.query).toBe('');
     });
     it('Teste emit @removeProject do CardProject', async () => {

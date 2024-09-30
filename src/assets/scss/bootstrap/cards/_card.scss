@@ -1,1 +1,8 @@
-$card-border-radius: 24px;
+@import "../../variables";
+
+$card-border-radius: 16px;
+$card-title-color:  $clicksign-emphasis-text-color;
+
+.card-body {
+  color: $clicksign-normal-text-color !important;
+}
