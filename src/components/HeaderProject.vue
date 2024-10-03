@@ -34,7 +34,7 @@ const createNewProject = () => {
 <template>
   <header class="sticky-header px-4 pt-4 d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-2">
-      <h1 class="fs-4 fw-semibold m-0">
+      <h1 class="fw-semibold m-0">
         Projetos 
       </h1>
       <span class="projet-count fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
@@ -110,6 +110,7 @@ const createNewProject = () => {
 
   h1 {
     color: $clicksign-emphasis-text-color;
+    font-size: 24px;
   }
 
   .projet-count {

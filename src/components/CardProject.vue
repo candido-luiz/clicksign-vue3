@@ -107,7 +107,7 @@ const removeProject = (projectId: string) => {
       <div class="d-flex flex-column gap-2">
         <div class="d-flex gap-3 align-items-center" title="Data de início">
           <span>
-            <i class="bi bi-calendar" style="font-size: 24px;"></i>
+            <i class="bi bi-calendar-event" style="font-size: 24px;"></i>
           </span>
           <span>{{ formatDate(project.startDate) }}</span>
         </div>

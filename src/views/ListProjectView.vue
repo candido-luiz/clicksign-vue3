@@ -158,7 +158,7 @@ watch([onlyFavorites, sortOption], () => {
       >
         <p>Não foram encontrados resultados para os filtros selecionados</p>
         <template #action>
-          <button @click="resetFilters" class="btn btn-primary" type="button">Limpar filtros</button>
+          <button @click="resetFilters" class="btn btn-primary px-4" type="button">Limpar filtros</button>
         </template>
       </ItemsNotFound>
     </main>

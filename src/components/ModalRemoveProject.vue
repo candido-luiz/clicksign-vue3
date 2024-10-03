@@ -7,13 +7,13 @@
         </div>
 
         <div class="modal-body p-4 d-flex flex-column align-items-center">
-          <h1 class="mb-3 modal-title">Remover Projeto</h1>
+          <h1 class="mb-3 modal-title fw-semibold">Remover Projeto</h1>
           <hr class="my-3"/>
           <p class="mb-3 text-center modal-info">Essa ação removerá definitivamente o projeto:</p>
-          <h2 class="fs-4 mb-4 text-center project-name">{{ projectName }}</h2>
-          <div class="d-flex gap-4">
-            <button id="cancelarRemocao" class="btn btn-outline-primary py-2 px-4 px-sm-5" @click="$emit('cancel')">Cancelar</button>
-            <button id="confirmarRemocao" class="btn btn-primary py-2 px-4 px-sm-5" @click="confirmRemoval">Confirmar</button>
+          <h2 class="mb-4 text-center project-name">{{ projectName }}</h2>
+          <div class="d-flex gap-4 flex-grow-1 w-100">
+            <button id="cancelarRemocao" class="btn btn-outline-primary flex-grow-1 py-2 px-4 px-sm-5" @click="$emit('cancel')">Cancelar</button>
+            <button id="confirmarRemocao" class="btn btn-primary flex-grow-1 py-2 px-4 px-sm-5" @click="confirmRemoval">Confirmar</button>
           </div>
         </div>
       </div>
@@ -90,5 +90,6 @@ const confirmRemoval = () => {
 }
 .project-name {
   color: $clicksign-topbar-background;
+  font-size: 24px;
 }
 </style>

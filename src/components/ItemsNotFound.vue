@@ -25,13 +25,18 @@ defineProps({
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1.5rem;
   text-align: center;
   margin-top: 20vh;
 
-}
-h1 {
-  color: $clicksign-emphasis-text-color;
-  size: 24px;
-  margin-bottom: 24px;
+  & > * {
+    margin: 0;
+  }
+
+  h1 {
+    color: $clicksign-emphasis-text-color;
+    font-size: 24px;
+  }
+
 }
 </style>

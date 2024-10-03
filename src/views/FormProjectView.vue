@@ -233,8 +233,8 @@ watch(isEditProjectView, value => {
             <i class="bi bi-arrow-left me-2"></i> 
             <span>Voltar</span>
           </button>
-          <h1 v-if="!isEditProjectView" class="fs-4 fw-semibold m-0">Novo projeto</h1>
-          <h1 v-else class="fs-4 m-0">Editar projeto</h1>
+          <h1 v-if="!isEditProjectView" class="fw-semibold m-0">Novo projeto</h1>
+          <h1 v-else class="fw-semibold m-0">Editar projeto</h1>
         </div>
       </header>
 
@@ -272,7 +272,7 @@ watch(isEditProjectView, value => {
            </div>
    
            <div class="row mb-3 mb-md-4">
-             <div class="col-12 col-sm-6  mb-3 mb-sm-0">
+             <div class="col-12 col-smd-6  mb-3 mb-smd-0">
                <label for="projectStartDate" :class="['form-label', {'invalid-field' : errors.startDate}]">Data de Início <span>(Obrigatório)</span></label>
                <input
                  type="date"
@@ -286,7 +286,7 @@ watch(isEditProjectView, value => {
                 {{ errors.startDate }}
               </div>
              </div>
-             <div class="col-12 col-sm-6">
+             <div class="col-12 col-smd-6">
                <label for="projectFinalDate" :class="['form-label', {'invalid-field' : errors.finalDate}]">Data final <span>(Obrigatório)</span></label>
                <input
                  type="date"
@@ -393,6 +393,7 @@ header {
 #projectForm {
   label {
     font-size: 18px;
+    font-weight: 500;
     
     &:is(.invalid-field) {
       color: var(--bs-danger);
@@ -402,6 +403,7 @@ header {
       color: $clicksign-primary-color;
       span {
         color: $clicksign-normal-text-color;
+        font-weight: 400;
       }
     }
 
