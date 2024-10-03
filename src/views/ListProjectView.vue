@@ -197,8 +197,14 @@ watch([onlyFavorites, sortOption], () => {
 }
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 450px));
   align-items: center;
+  justify-content: center;
   gap: 30px;
+
+  @media (width >= 678px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+    justify-content: normal;
+  }
 }
 </style>

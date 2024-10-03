@@ -95,11 +95,15 @@ const removeProject = (projectId: string) => {
     </div>
 
     <div class="card-body">
-      <h1 class="card-title fs-5 fw-bold" v-html="projectName"></h1>
+      <h1 
+        class="card-title truncate-text fs-5 fw-bold" 
+        v-html="projectName"
+        :title="project.name"
+      ></h1>
 
-      <p class="card-text">
+      <p class="card-text truncate-text">
         <span class="fw-bold">Cliente: </span>
-        <span>{{ project.customer }}</span>
+        <span :title="project.customer">{{ project.customer }}</span>
       </p>
 
       <hr />
@@ -172,6 +176,12 @@ mark{
       background-color: unset;
     }
   }
+}
+
+.truncate-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 </style>
