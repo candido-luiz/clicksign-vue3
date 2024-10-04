@@ -61,6 +61,7 @@ const removeProject = (projectId: string) => {
       <img :src="cardCoverImage" alt="Project Cover" class="card-img-top" height="230" />
 
       <i
+        data-cy="toggle-favorite"
         class="favorite-icon"
         :class="[isFavorite ? 'bi bi-star-fill' : 'bi bi-star']"
         :style="{
