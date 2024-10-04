@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { ref, computed, defineEmits, defineProps, onMounted, nextTick, onUpdated } from 'vue';
+import { ref, computed, defineEmits, defineProps } from 'vue';
 import { type IDropdownOption } from "@/components/interfaces/IDropdownOption";
+import IntersectionObserver from "@/components/IntersectionObserver.vue";
 
 interface Props {
   options: IDropdownOption[],
-  defaultOption: IDropdownOption | null
+  defaultOption: IDropdownOption | null,
+  fullWidth?: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   options: () => [],
-  defaultOption: null
+  defaultOption: null,
+  fullWidth: false,
 })
 
 const emit = defineEmits<{
@@ -38,20 +41,30 @@ const toggleOptionsVisibility= () => {
 
 const setListsMinWidth = () => {
   if(selectDropdown.value && selectIDropdownOptions.value) {
+
+    if(props.fullWidth) {
+      selectIDropdownOptions.value.style.width = "100%";
+      return
+    }
     const dropdownWidth = selectIDropdownOptions.value.clientWidth;
     const dropdownArrowWidth = 40;
+    if(
+      selectDropdown.value.style.minWidth &&
+      selectDropdown.value.style.minWidth ===
+      selectIDropdownOptions.value.style.minWidth
+    ) {
+      return
+    }
     selectDropdown.value.style.minWidth = `${dropdownWidth + dropdownArrowWidth}px`;
     selectIDropdownOptions.value.style.minWidth = selectDropdown.value.style.minWidth;
   }
 }
 
-onMounted(() => {
-  setListsMinWidth();
-});
 </script>
 
 <template>
   <div class="position-relative">
+    <IntersectionObserver @observed="setListsMinWidth"/>
     <ul ref="selectDropdown" class="list-group">
       <li 
         class="list-group-item select-display d-flex justify-content-between"
@@ -93,7 +106,6 @@ $dropdown-border: 1px solid $clicksign-primary-color;
   top: 100%;
   min-width: max-content;
   max-width: 100%;
-  
 
   .list-group-item {
 
@@ -111,8 +123,8 @@ $dropdown-border: 1px solid $clicksign-primary-color;
     }
 
     &:hover {
-      background-color: $clicksign-primary-color;
-      color: #FFFFFF;
+      background-color: $clicksign-background;
+      color: black;
     }
   }
 
@@ -124,6 +136,7 @@ $dropdown-border: 1px solid $clicksign-primary-color;
 .select-display {
   cursor: pointer;
   border-radius: 8px;
+
   &.open {
     border: $dropdown-border;
     border-bottom-left-radius: 0;
