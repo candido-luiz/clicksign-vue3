@@ -61,6 +61,11 @@ describe('ListProjectView', () => {
 
   beforeEach(() => {
     projectList = [...mockProjectList]
+    vi.stubGlobal('IntersectionObserver', vi.fn(() => ({
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    })));
   })
 
   it('Verifica se foi montado', () => {

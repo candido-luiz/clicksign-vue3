@@ -1,18 +1,42 @@
 <script setup lang="ts">
 import { useProjectStore } from '@/stores/project';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { type IDropdownOption } from "@/components/interfaces/IDropdownOption";
+import SelectDropdown from '@/components/SelectDropdown.vue';
+
+const DEFAULT_OPTION = {
+  value: 'alphabetical',
+  label: 'Ordem alfabética',
+};
+
+const selectedValue = ref(``)
 
 const router = useRouter();
 const projectStore = useProjectStore();
+
+const dropdownOptions = ref<IDropdownOption[]>([
+  { value: 'alphabetical', label: 'Ordem alfabética' },
+  { value: 'newest', label: 'Iniciados mais recentes' },
+  { value: 'endingSoon', label: 'Prazo mais próximo' },
+]);
 
 const totalProjects = computed(() => projectStore.projects.length);
 const onlyFavorites = computed(() => {
   return projectStore.onlyFavorites;
 });
+
 const sortOption = computed(() => {
   return projectStore.sortOption;
 });
+
+const defaultOption = computed(() => {
+  const option =  dropdownOptions.value.find(option => {
+    return option.value === sortOption.value
+  })
+
+  return option || DEFAULT_OPTION;
+})
 
 
 const toggleFavoritesView = (event: Event) => {
@@ -20,9 +44,9 @@ const toggleFavoritesView = (event: Event) => {
   projectStore.setOnlyFavorites(showOnlyFavorites); 
 };
 
-const toggleSortOption = (event: Event) => {
-  const option = ((event.target as HTMLInputElement).value) as 'alphabetical' | 'newest' | 'endingSoon';
-  projectStore.setSortOption(option);
+const toggleSortOption = (option: string) => {
+  const selectedOption = option as 'alphabetical' | 'newest' | 'endingSoon';
+  projectStore.setSortOption(selectedOption);
 }
 
 const createNewProject = () => {
@@ -34,7 +58,7 @@ const createNewProject = () => {
 <template>
   <header class="sticky-header px-4 pt-4 d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-2">
-      <h1 class="fs-4 fw-semibold m-0">
+      <h1 class="fw-semibold m-0">
         Projetos 
       </h1>
       <span class="projet-count fs-6" style="font-size: 17px;">({{ totalProjects }})</span>
@@ -55,13 +79,16 @@ const createNewProject = () => {
             <input :checked="onlyFavorites" @change="toggleFavoritesView" class="form-check-input" type="checkbox" id="favoritesSwitch">
             <label class="form-check-label" for="favoritesSwitch">Apenas Favoritos</label>
           </div>
-          <div>
-            <label for="sortOptions">Ordenar por:</label>
-            <select :value="sortOption" id="sortOptions" @change="toggleSortOption" class="form-select" aria-label="Ordenar projetos">
-              <option value="alphabetical" selected>Ordem alfabética</option>
-              <option value="newest">Projetos iniciados mais recentemente</option>
-              <option value="endingSoon">Projetos próximos à data de finalização</option>
-            </select>
+          <div class="d-flex flex-column">
+            <span class="mb-2">Ordenar por:</span>
+            <SelectDropdown 
+              id="sortOptions"
+              :options="dropdownOptions"
+              :defaultOption="defaultOption"
+              @optionSelected="toggleSortOption"
+              :full-width="true"
+            />
+            
           </div>
         </div>
       </div>
@@ -83,11 +110,12 @@ const createNewProject = () => {
         <label class="form-check-label" for="favoritesSwitchDesktop">Apenas Favoritos</label>
       </div>
 
-      <select id="sortOptionsDesktop" :value="sortOption" @change="toggleSortOption" class="form-select" aria-label="Ordenar projetos">
-        <option value="alphabetical" selected>Ordem alfabética</option>
-        <option value="newest">Projetos iniciados mais recentemente</option>
-        <option value="endingSoon">Projetos próximos à data de finalização</option>
-      </select>
+      <SelectDropdown 
+        id="sortOptionsDesktop"
+        :options="dropdownOptions"
+        :defaultOption="defaultOption"
+        @optionSelected="toggleSortOption"
+      />
 
       <button 
         id="createProjectDesktop"
@@ -110,6 +138,7 @@ const createNewProject = () => {
 
   h1 {
     color: $clicksign-emphasis-text-color;
+    font-size: 24px;
   }
 
   .projet-count {

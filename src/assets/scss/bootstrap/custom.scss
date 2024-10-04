@@ -10,4 +10,12 @@
 
 $primary: $clicksign-primary-color;
 
+@import "bootstrap/scss/variables";
+
+$custom-breakpoints: (
+  "smd":600px,
+);
+
+$grid-breakpoints: map-merge($grid-breakpoints, $custom-breakpoints);
+
 @import "bootstrap/scss/bootstrap";

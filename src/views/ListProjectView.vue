@@ -158,7 +158,7 @@ watch([onlyFavorites, sortOption], () => {
       >
         <p>Não foram encontrados resultados para os filtros selecionados</p>
         <template #action>
-          <button @click="resetFilters" class="btn btn-primary" type="button">Limpar filtros</button>
+          <button @click="resetFilters" class="btn btn-primary px-4" type="button">Limpar filtros</button>
         </template>
       </ItemsNotFound>
     </main>
@@ -197,8 +197,14 @@ watch([onlyFavorites, sortOption], () => {
 }
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 450px));
   align-items: center;
+  justify-content: center;
   gap: 30px;
+
+  @media (width >= 678px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+    justify-content: normal;
+  }
 }
 </style>

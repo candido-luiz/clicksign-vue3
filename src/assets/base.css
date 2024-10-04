@@ -18,6 +18,6 @@ body, #app {
 }
 
 body {
-  font-family: 'Encode Sans Semi Expanded', sans-serif;
+  font-family: 'Encode Sans Semi Expanded', sans-serif !important;
   background-color: var(--clicksign-background) !important;
 }
