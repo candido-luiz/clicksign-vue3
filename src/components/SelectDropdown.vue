@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineEmits, defineProps } from 'vue';
+import { ref, computed, defineEmits, defineProps, onBeforeUnmount } from 'vue';
 import { type IDropdownOption } from "@/components/interfaces/IDropdownOption";
 import IntersectionObserver from "@/components/IntersectionObserver.vue";
 
@@ -19,6 +19,7 @@ const emit = defineEmits<{
   (e: 'optionSelected', option: string): void;
 }>();
 
+const dropdownWrapper = ref<HTMLElement>();
 const selectDropdown = ref<HTMLElement>();
 const selectIDropdownOptions = ref<HTMLElement>();
 const showOptions= ref<boolean>(false);
@@ -35,8 +36,29 @@ const selectOption = (option: IDropdownOption) => {
   emit('optionSelected', option.value);
 };
 
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (event.key === "Escape") {
+    toggleOptionsVisibility();
+  }
+}
+
+const handleClickOutside = (event: Event) => {
+  const dropdown = dropdownWrapper.value;
+  if (dropdown && !dropdown.contains(event.target as Node)) {
+    toggleOptionsVisibility(); 
+  }
+}
+
 const toggleOptionsVisibility= () => {
   showOptions.value = !showOptions.value;
+
+  if(showOptions.value) {
+    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('click', handleClickOutside);
+  } else {
+    document.removeEventListener('keyup', handleKeyUp);
+    document.removeEventListener('click', handleClickOutside);
+  }
 }
 
 const setListsMinWidth = () => {
@@ -60,10 +82,15 @@ const setListsMinWidth = () => {
   }
 }
 
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', handleKeyUp);
+  document.removeEventListener('click', handleClickOutside);
+})
+
 </script>
 
 <template>
-  <div class="position-relative">
+  <div ref="dropdownWrapper" class="position-relative">
     <IntersectionObserver @observed="setListsMinWidth"/>
     <ul ref="selectDropdown" class="list-group">
       <li 
