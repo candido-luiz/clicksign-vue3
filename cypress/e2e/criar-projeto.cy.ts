@@ -17,14 +17,17 @@ describe('Criação de projetos', () => {
 
     cy.url().should('include', '/');
 
+    const startDay = new Date('2024-09-20').getDate();
+    const finalDay = new Date('2024-10-20').getDate();
+
     cy.get('.card-grid')
       .find('.card')
       .should('have.length', 1)
       .find('.card-body')
       .should('contain', 'Projeto 1')
       .should('contain', 'Cliente: Cliente')
-      .should('contain', '19 de Setembro de 2024')
-      .should('contain', '19 de Outubro de 2024');
+      .should('contain', `${startDay} de Setembro de 2024`)
+      .should('contain', `${finalDay} de Outubro de 2024`);
   });
 
   it('Cria multiplos projetos', () => {
