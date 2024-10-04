@@ -24,7 +24,7 @@ const setShowSearchBar = inject(setShowSearchBarKey);
     <div class="page-title">
       Gerenciador de Projetos
     </div>
-    <div v-if="canSearchItems" class="search-icon" @click="setShowSearchBar!(true)">
+    <div v-if="canSearchItems" id="open-search" class="search-icon" @click="setShowSearchBar!(true)">
       <i class="bi bi-search"></i>
     </div>
   </header>

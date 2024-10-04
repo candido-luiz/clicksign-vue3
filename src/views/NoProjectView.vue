@@ -13,6 +13,7 @@ import { useRouter } from 'vue-router';
       <h1 class="fw-semibold">Nenhum projeto</h1>
       <p>Clique no botão abaixo para criar o primeiro e gerenciá-lo.</p>
       <button 
+        data-cy="novo-projeto_no-projects"
         @click="createNewProject" 
         class="btn btn-primary d-flex align-items-center flex-shrink-0 gap-3 px-4"
         type="button"
