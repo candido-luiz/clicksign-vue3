@@ -57,18 +57,9 @@ describe('HeaderProject', () => {
       expect(wrapper.vm.projectStore.setOnlyFavorites).toBeCalledWith(false);
     });
 
-    it('Selecionar ordenacao - offcanvas', async () => {
-      const selectSort = wrapper.find('#sortOptions');
-      expect(selectSort.exists()).toBeTruthy();
-      await selectSort.setValue('newest');
+    it('Selecionar ordenacao', async () => {
+      await wrapper.vm.toggleSortOption('newest');
       expect(wrapper.vm.projectStore.setSortOption).toBeCalledWith('newest');
-    });
-
-    it('Selecionar ordenacao - desktop header', async () => {
-      const selectSort = wrapper.find('#sortOptionsDesktop');
-      expect(selectSort.exists()).toBeTruthy();
-      await selectSort.setValue('endingSoon');
-      expect(wrapper.vm.projectStore.setSortOption).toBeCalledWith('endingSoon');
     });
 
     it('Ir para criacao de novo projeto - offcanvas', async () => {

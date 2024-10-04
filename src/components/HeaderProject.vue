@@ -82,6 +82,7 @@ const createNewProject = () => {
           <div class="d-flex flex-column">
             <span class="mb-2">Ordenar por:</span>
             <SelectDropdown 
+              id="sortOptions"
               :options="dropdownOptions"
               :defaultOption="defaultOption"
               @optionSelected="toggleSortOption"
@@ -110,6 +111,7 @@ const createNewProject = () => {
       </div>
 
       <SelectDropdown 
+        id="sortOptionsDesktop"
         :options="dropdownOptions"
         :defaultOption="defaultOption"
         @optionSelected="toggleSortOption"

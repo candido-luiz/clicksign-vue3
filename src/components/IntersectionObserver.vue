@@ -18,28 +18,26 @@ const props = withDefaults(defineProps<Props>(), {
   })
 })
 
-
 const emit = defineEmits(['observed']);
 
 const observedElement = ref<HTMLElement | null>(null);
-
-let intersectionObserver: IntersectionObserver | null = null;
+const intersectionObserver = ref<IntersectionObserver | null>(null);
 
 function registerInfiniteLoader() {
-  intersectionObserver = new IntersectionObserver(entries => {
+  intersectionObserver.value = new IntersectionObserver(entries => {
     if (entries && entries[0].isIntersecting) {
       emit('observed');
     }
   }, props.options);
 
   if (observedElement.value) {
-    intersectionObserver.observe(observedElement.value);
+    intersectionObserver.value.observe(observedElement.value);
   }
 }
 
 function unobserveInfiniteLoadObserver() {
-  if (intersectionObserver && observedElement.value) {
-    intersectionObserver.unobserve(observedElement.value);
+  if (intersectionObserver.value && observedElement.value) {
+    intersectionObserver.value.unobserve(observedElement.value);
   }
 }
 
