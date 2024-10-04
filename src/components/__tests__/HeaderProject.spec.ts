@@ -1,7 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach,afterEach, describe, expect, it, vi } from "vitest";
 import HeaderProject from "../HeaderProject.vue";
 import { shallowMount, type VueWrapper } from "@vue/test-utils";
-import { afterEach } from "node:test";
 
 
 vi.mock('vue-router', () => ({
