@@ -44,7 +44,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Cypress run
-        uses: npm run test:e2e
+        run: npm run test:e2e
       - name: SPA Redirect
         run: npm run 404-spa-redirect
       - name: Setup Pages
